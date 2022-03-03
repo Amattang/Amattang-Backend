@@ -8,7 +8,7 @@ import java.util.List;
 
 
 @Data
-public class CustomQuestionRequestDto {
+public class CustomRequestDto {
 
     @ApiModelProperty(name = "카테고리 아이디", example = "1", notes = "put 요청시에만 포함")
     private Long id;

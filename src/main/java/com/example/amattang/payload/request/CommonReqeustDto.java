@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class CommonQuestionReqeustDto {
+public class CommonReqeustDto {
 
     private Long categoryId;
     private List<CommonAnswerDto> answer;
