@@ -1,26 +1,26 @@
 package com.example.amattang.domain.user;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Builder
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    @Column(name = "user_id")
+    private String id;
 
     @Enumerated(EnumType.STRING)
     private PROVIDER provider;
 
     private String name;
 
-    private String email;
-
-    enum PROVIDER {
+    public enum PROVIDER {
         KAKAO, APPLE
     }
 
