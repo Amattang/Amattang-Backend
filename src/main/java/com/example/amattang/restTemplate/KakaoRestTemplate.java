@@ -6,7 +6,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Optional;
 
 public class KakaoRestTemplate {
 
@@ -18,11 +21,14 @@ public class KakaoRestTemplate {
         return new HttpEntity(httpHeaders);
     }
 
-    public KakaoUserInfoReponseDto getKakaoUserNickName(String token) {
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<KakaoUserInfoReponseDto> exchange = restTemplate.exchange(baseUri + "/v2/user/me", HttpMethod.GET, httpEntity(token), new ParameterizedTypeReference<KakaoUserInfoReponseDto>() {
-        });
-        return exchange.getBody();
+    public Optional<KakaoUserInfoReponseDto> getKakaoUserNickName(String token) {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<KakaoUserInfoReponseDto> exchange = restTemplate.exchange(baseUri + "/v2/user/me", HttpMethod.GET, httpEntity(token), new ParameterizedTypeReference<KakaoUserInfoReponseDto>() {
+            });
+            return Optional.of(exchange.getBody());
+        } catch (HttpClientErrorException e) {
+            return Optional.ofNullable(null);
+        }
     }
 }
