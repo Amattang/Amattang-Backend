@@ -19,8 +19,8 @@ public class CommonQuestion {
     private Long id;
 
     private String question;
-    private String main_category;
-    private String sub_category;
+    private String mainCategory;
+    private String subcategory;
     private String rule;
     private String description;
     private String emoji;

@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class AnswerB extends Answer{
 
     @Id
+    @Column(name = "ans_type_b_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -14,8 +15,8 @@ public class AnswerB extends Answer{
     @JoinColumn(name = "answer_answer_id")
     private Answer answerId;
 
-    private String ans1;
-    private String ans2;
-    private String direct1;
-    private String direct2;
+    private String ans_type1;
+    private String ans_type2;
+    private String description_type1;
+    private String description_type2;
 }
