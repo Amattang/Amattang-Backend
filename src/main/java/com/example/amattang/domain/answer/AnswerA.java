@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class AnswerA extends Answer{
 
     @Id
+    @Column(name = "answer_type_a_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -14,7 +15,10 @@ public class AnswerA extends Answer{
     @JoinColumn(name = "answer_answer_id")
     private Answer answerId;
 
-    private Boolean ans;
+
+    private Boolean ansTrue;
+
+    private Boolean ansFalse;
     private String redType;
 
 }

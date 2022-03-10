@@ -8,6 +8,7 @@ public class AnswerD extends Answer{
 
 
     @Id
+    @Column(name = "answer_type_d_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
