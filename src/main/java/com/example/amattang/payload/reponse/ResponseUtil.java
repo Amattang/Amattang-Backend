@@ -2,6 +2,7 @@ package com.example.amattang.payload.reponse;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,7 @@ public class ResponseUtil {
     }
 
     @Data
+    @NoArgsConstructor
     public static class DefaultResponse<T> {
         
         @ApiModelProperty(name = "반환 데이터")

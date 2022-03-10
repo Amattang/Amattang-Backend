@@ -5,9 +5,14 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Date;
+
 @Getter
 @AllArgsConstructor
 public class LoginResponseDto {
+
+    @ApiModelProperty(name = "토큰 타입", example = "Bearer")
+    private final String tokenType = "Bearer";
 
     @ApiModelProperty(name = "사용자 아이디", example = "KAKAO_12345")
     private String id;
@@ -17,16 +22,25 @@ public class LoginResponseDto {
     private String provider;
     @ApiModelProperty(name = "access token")
     private String accessToken;
+
+    @ApiModelProperty(name = "access token 남은 유효 시간 (밀리초)", example = "14400000")
+    private long accessExpiresIn;
     @ApiModelProperty(name = "refresh token")
     private String refreshToken;
 
-    public static LoginResponseDto create(User user, String access, String refresh) {
+    @ApiModelProperty(name = "refresh token 남은 유효 시간 (밀리초)", example = "2592000000")
+    private long refreshExpiresIn;
+
+    public static LoginResponseDto create(User user, String access, String refresh, Date date) {
+        Date now = new Date();
         return new LoginResponseDto(
                 user.getId(),
                 user.getName(),
                 user.getProvider().name().toLowerCase(),
                 access,
-                refresh
+                14400000L - (now.getTime() - date.getTime()),
+                refresh,
+                2592000000L - (now.getTime() - date.getTime())
         );
     }
 

@@ -1,15 +1,11 @@
 package com.example.amattang.security;
 
-import com.example.amattang.domain.user.User;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-
-import static com.example.amattang.security.TokenProvider.TokenType.AUTHORIZATION;
 
 @Component
 @Slf4j
@@ -28,25 +24,25 @@ public class TokenProvider {
         AUTHORIZATION,
         REFRESH
     }
-    public String createJwtToken(User user, TokenType type) {
 
-        Date now = new Date();
-
-        JwtBuilder jwtBuilder = Jwts.builder()
+    private JwtBuilder jwtBuilder(Date date) {
+        return Jwts.builder()
                 .setIssuer(tokenSecret)
-                .setIssuedAt(now)
+                .setIssuedAt(date)
                 .signWith(SignatureAlgorithm.HS512, tokenSecret);
+    }
 
-        if (type.equals(AUTHORIZATION)) {
-            return jwtBuilder
-                    .setSubject(user.getId())
-                    .setExpiration(new Date(now.getTime() + accessTokenExpirationSec))
-                    .compact();
-        } else {
-            return jwtBuilder
-                    .setExpiration(new Date(now.getTime() + refreshTokenExpirationSec))
-                    .compact();
-        }
+    public String createJwtAccessToken(String userId, Date date) {
+        return jwtBuilder(date)
+                .setSubject(userId)
+                .setExpiration(new Date(date.getTime() + accessTokenExpirationSec))
+                .compact();
+    }
+
+    public String createJwtRefreshToken(Date date) {
+        return jwtBuilder(date)
+                .setExpiration(new Date(date.getTime() + refreshTokenExpirationSec))
+                .compact();
     }
 
     public boolean validateToken(String authToken) {
@@ -69,15 +65,13 @@ public class TokenProvider {
         return false;
     }
 
-    public Long getUserIdFromToken(String token) {
+    public String getUserIdFromToken(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(tokenSecret)
                 .parseClaimsJws(token)
                 .getBody();
 
-        log.debug(claims.toString());
-
-        return Long.parseLong(claims.getSubject());
+        return claims.getSubject();
     }
 
 }
