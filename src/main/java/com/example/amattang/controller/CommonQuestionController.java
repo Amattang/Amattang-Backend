@@ -1,59 +1,83 @@
 package com.example.amattang.controller;
 
+import com.example.amattang.domain.user.User;
+import com.example.amattang.domain.user.UserRepository;
 import com.example.amattang.payload.reponse.CommonCheckListDto;
+import com.example.amattang.payload.reponse.CommonQuestionDto;
 import com.example.amattang.payload.reponse.ResponseUtil;
 import com.example.amattang.payload.request.CommonReqeustDto;
 import com.example.amattang.payload.request.CommonVisibilityRequestDto;
-import io.swagger.annotations.*;
-import org.springframework.http.HttpStatus;
+import com.example.amattang.security.CurrentUser;
+import com.example.amattang.security.UserPrincipal;
+import com.example.amattang.service.CheckListService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static com.example.amattang.payload.reponse.ResponseMessage.*;
+import static com.example.amattang.payload.reponse.ResponseUtil.succes;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
-@RequestMapping("/api/check-list/{checkListId}/common")
+@RequiredArgsConstructor
+@RequestMapping("/api/check-list")
 public class CommonQuestionController {
 
-    @ApiOperation(value = "2-1.(세부)카테고리 별로 목록 반환", notes = "타입을 어떻게 나눠서 전송할 수 있을까", response = CommonCheckListDto.class, responseContainer = "List")
+    private final CheckListService checkListService;
+    private final UserRepository userRepository;
+
+
+    //리스트가 없는 경우
+    @ApiOperation(value = "2-1. 체크리스트 생성 및 질문 목록 반환", response = CommonCheckListDto.class)
+    @GetMapping("/init")
+    public ResponseEntity<?> getList(@CurrentUser UserPrincipal userPrincipal) {
+        User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
+        CommonCheckListDto checkList = checkListService.createCheckList(user);
+        return succes(checkList, CREATE_CHECK_LIST);
+    }
+
+    //리스트가 있는 경우
+    @ApiOperation(value = "2-2.(세부)카테고리 별로 목록 반환", notes = "타입을 어떻게 나눠서 전송할 수 있을까", response = CommonQuestionDto.class, responseContainer = "List")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "checkListId", value = "체크리스트 아이디", paramType = "path"),
             @ApiImplicitParam(name="mainCategory", value = "체크리스트의 1차 카테고리",paramType = "param", required = true),
             @ApiImplicitParam(name="subCategory", value = "체크리스트의 2차 카테고리", paramType = "param"),
             @ApiImplicitParam(name="visibility", value = "체크리스트에서의 질문 삭제 여부", paramType = "param", required = true),
     })
-    @GetMapping
+    @GetMapping("/{checkListId}/common")
     public ResponseEntity<?> doc2(@PathVariable("checkListId") Long checkListId, @RequestParam("mainCategory") String mainCategory,
                                @RequestParam(value = "subCategory", required = false) String subCategory, @RequestParam(value = "visibility") Boolean visibility) {
-
-        List<CommonCheckListDto> commonCheckListDtos = Arrays.asList(new CommonCheckListDto());
-        return ResponseUtil.succes(commonCheckListDtos, GET_CHECK_LIST_CATEGORY);
+        List<CommonQuestionDto> commonQuestionDtos = Arrays.asList(new CommonQuestionDto());
+        return succes(commonQuestionDtos, GET_CHECK_LIST_CATEGORY);
     }
 
-    @ApiOperation(value = "2-2. 답변 등록하기 (미완성)", notes = "타입을 어떻게 나눠서 요청받을 수 있을까")
+    @ApiOperation(value = "2-3. 답변 등록하기 (미완성)", notes = "타입을 어떻게 나눠서 요청받을 수 있을까")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "checkListId", value = "체크리스트 아이디", paramType = "path"),
             @ApiImplicitParam(name = "CommonQuestionReqeustDto", value = "카테고리 아이디와 답변 목록")
     })
-    @PutMapping("/question")
+    @PutMapping("/{checkListId}/common/question")
     public ResponseEntity<?> doc5(@PathVariable("checkListId") Long checkListId, @RequestBody CommonReqeustDto dto) {
 
-        return ResponseUtil.succes(CREATED, UPDATE_CHECK_LIST_ANSWER);
+        return succes(CREATED, UPDATE_CHECK_LIST_ANSWER);
     }
 
-    @ApiOperation(value = "2-3.삭제했던 질문 다시 추가하기 / 질문 삭제하기 (질문 상태 변경)", response = ResponseUtil.class)
+    @ApiOperation(value = "2-4.삭제했던 질문 다시 추가하기 / 질문 삭제하기 (질문 상태 변경)", response = ResponseUtil.class)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "checkListId", value = "체크리스트 아이디", paramType = "path"),
             @ApiImplicitParam(name = "questionIds", value = "(삭제(추가)할 질문 아이디, 삭제 여부) 리스트")
     })
-    @PutMapping("/question/status")
+    @PutMapping("/{checkListId}/common/question/status")
     public ResponseEntity<?> doc4(@PathVariable("checkListId") Long checkListId, @RequestBody List<CommonVisibilityRequestDto> dto) {
 
-        return ResponseUtil.succes(CREATED, UPDATE_CHECK_LIST_QUESTION_STATUS);
+        return succes(CREATED, UPDATE_CHECK_LIST_QUESTION_STATUS);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.example.amattang.domain.answer;
 
+import com.example.amattang.domain.commonQuestion.CommonQuestion;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,10 +17,10 @@ public class AnswerA extends Answer{
     @JoinColumn(name = "answer_answer_id")
     private Answer answerId;
 
-
     private Boolean ansTrue;
 
     private Boolean ansFalse;
     private String redType;
+
 
 }
