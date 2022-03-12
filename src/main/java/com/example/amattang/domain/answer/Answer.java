@@ -5,6 +5,7 @@ import com.example.amattang.domain.listToQuestion.ListToQuestion;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "answer")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Answer {
 

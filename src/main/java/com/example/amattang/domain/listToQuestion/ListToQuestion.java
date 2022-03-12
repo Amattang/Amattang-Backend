@@ -2,10 +2,15 @@ package com.example.amattang.domain.listToQuestion;
 
 import com.example.amattang.domain.checkList.CheckList;
 import com.example.amattang.domain.commonQuestion.CommonQuestion;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "check_list_common_question")
 public class ListToQuestion {
 
@@ -23,4 +28,5 @@ public class ListToQuestion {
     private CommonQuestion commonQuestionId;
 
     private Boolean visibility;
+
 }

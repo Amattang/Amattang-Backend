@@ -16,6 +16,6 @@ public class AnswerD extends Answer{
     @JoinColumn(name = "answer_answer_id")
     private Answer answerId;
 
-    @Lob
-    private byte[] ans;
+    private String type;
+    private boolean ans;
 }
