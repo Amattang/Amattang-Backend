@@ -9,12 +9,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.NoSuchElementException;
+
 import static com.example.amattang.payload.reponse.ResponseUtil.fail;
 
 @RestControllerAdvice
 public class AdviceController {
 
-    @ExceptionHandler(value = {BadRequestException.class, BindException.class})
+    @ExceptionHandler(value = {BadRequestException.class, BindException.class, NoSuchElementException.class})
     public ResponseEntity<DefaultResponse> BadRequestHandler(Exception e, BindingResult result) {
         return fail(HttpStatus.BAD_REQUEST, result.getFieldError().getDefaultMessage());
     }

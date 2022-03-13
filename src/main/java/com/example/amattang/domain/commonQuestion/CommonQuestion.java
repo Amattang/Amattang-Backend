@@ -3,6 +3,8 @@ package com.example.amattang.domain.commonQuestion;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -28,5 +30,19 @@ public abstract class CommonQuestion {
 
     @Column(name = "ans_type")
     private String ansType;
+
+    @Getter
+    public enum MAIN_CATEGORY {
+        OUTSIDE("외부시설"),
+        INSIDE("내부시설"),
+        OPTIONS("옵션"),
+        BASIC("기본정보");
+
+        private String msg;
+
+        MAIN_CATEGORY(String msg) {
+            this.msg = msg;
+        }
+    }
 
 }

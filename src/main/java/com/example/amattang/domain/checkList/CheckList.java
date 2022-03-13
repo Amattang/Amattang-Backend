@@ -3,17 +3,19 @@ package com.example.amattang.domain.checkList;
 import com.example.amattang.domain.listToQuestion.ListToQuestion;
 import com.example.amattang.domain.user.User;
 import lombok.*;
-import net.bytebuddy.implementation.bind.annotation.Default;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class CheckList {
 
     @Id
@@ -21,7 +23,7 @@ public class CheckList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_user_id")
     private User user;
 
@@ -29,8 +31,7 @@ public class CheckList {
 
     @Setter
     @OneToMany(mappedBy = "checkListId", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
-    @Builder.Default
-    Set<ListToQuestion> listCommonQuestion = new HashSet<>();
+    List<ListToQuestion> listCommonQuestion = new ArrayList<>();
 
     public CheckList(User user, Boolean pinned) {
         this.user = user;

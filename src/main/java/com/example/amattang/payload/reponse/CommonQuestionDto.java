@@ -42,11 +42,9 @@ public class CommonQuestionDto {
                 .rule(question.getRule())
                 .description(question.getDescription())
                 .emoji(question.getEmoji())
-                .type(question.getAnsType())
+                .type((question.getAnsType().equals("C")) ? "A" : question.getAnsType())
                 .answer(answer)
                 .build();
-
-
     }
 
 }

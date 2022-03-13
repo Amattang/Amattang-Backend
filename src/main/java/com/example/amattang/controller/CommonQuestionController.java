@@ -10,6 +10,7 @@ import com.example.amattang.payload.request.CommonVisibilityRequestDto;
 import com.example.amattang.security.CurrentUser;
 import com.example.amattang.security.UserPrincipal;
 import com.example.amattang.service.CheckListService;
+import com.example.amattang.service.CommonQuestionService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +33,7 @@ public class CommonQuestionController {
 
     private final CheckListService checkListService;
     private final UserRepository userRepository;
+    private final CommonQuestionService questionService;
 
 
     //리스트가 없는 경우
@@ -52,10 +54,11 @@ public class CommonQuestionController {
             @ApiImplicitParam(name="visibility", value = "체크리스트에서의 질문 삭제 여부", paramType = "param", required = true),
     })
     @GetMapping("/{checkListId}/common")
-    public ResponseEntity<?> doc2(@PathVariable("checkListId") Long checkListId, @RequestParam("mainCategory") String mainCategory,
+    public ResponseEntity<?> doc2(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") Long checkListId, @RequestParam("mainCategory") String mainCategory,
                                @RequestParam(value = "subCategory", required = false) String subCategory, @RequestParam(value = "visibility") Boolean visibility) {
-        List<CommonQuestionDto> commonQuestionDtos = Arrays.asList(new CommonQuestionDto());
-        return succes(commonQuestionDtos, GET_CHECK_LIST_CATEGORY);
+        User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
+        CommonCheckListDto commonCheckListDto = questionService.getCheckListQuestionsWithAnswer(user, checkListId, mainCategory, subCategory, visibility);
+        return succes(commonCheckListDto, GET_CHECK_LIST_CATEGORY);
     }
 
     @ApiOperation(value = "2-3. 답변 등록하기 (미완성)", notes = "타입을 어떻게 나눠서 요청받을 수 있을까")
@@ -75,7 +78,8 @@ public class CommonQuestionController {
             @ApiImplicitParam(name = "questionIds", value = "(삭제(추가)할 질문 아이디, 삭제 여부) 리스트")
     })
     @PutMapping("/{checkListId}/common/question/status")
-    public ResponseEntity<?> doc4(@PathVariable("checkListId") Long checkListId, @RequestBody List<CommonVisibilityRequestDto> dto) {
+    public ResponseEntity<?> doc4(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") Long checkListId, @RequestBody List<CommonVisibilityRequestDto> dto) {
+        User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
 
         return succes(CREATED, UPDATE_CHECK_LIST_QUESTION_STATUS);
     }

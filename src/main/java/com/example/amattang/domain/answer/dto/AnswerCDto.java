@@ -1,17 +1,20 @@
 package com.example.amattang.domain.answer.dto;
 
+import com.example.amattang.domain.answer.AnswerC;
 import com.example.amattang.domain.commonQuestion.CommonQuestionTypeC;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Builder
+@Getter
 @AllArgsConstructor
 public class AnswerCDto {
 
@@ -28,7 +31,7 @@ public class AnswerCDto {
         private String type;
 
         @ApiModelProperty(name = "답변", example = "true")
-        private boolean val;
+        private Boolean val;
 
         @ApiModelProperty(name = "버튼 색깔이 빨강색인가?", example = "true")
         private boolean redType;
@@ -47,6 +50,19 @@ public class AnswerCDto {
             list.add(new Answer("더러움", (question.getRedType().equals(REDTYPE.TRUE)? true : false)));
         }
         return AnswerCDto.builder()
+                .answer(list)
+                .build();
+    }
+
+    public static AnswerCDto fromAnswer(CommonQuestionTypeC question, AnswerC answer, Long id) {
+        Answer answer1 = new Answer("손상", answer.getAnsType1(), (question.getRedType().equals(REDTYPE.TRUE) ? true : false));
+        Answer answer3 = new Answer("해당 없음", answer.getAnsType3(), false);
+        ArrayList list = new ArrayList(Arrays.asList(answer1, answer3));
+        if (question.getType2Exists()) {
+            list.add(new Answer("더러움", answer.getAnsType2(), (question.getRedType().equals(REDTYPE.TRUE)? true : false)));
+        }
+        return AnswerCDto.builder()
+                .answerId(id)
                 .answer(list)
                 .build();
     }

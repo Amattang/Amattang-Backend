@@ -1,5 +1,7 @@
 package com.example.amattang.domain.answer.dto;
 
+import com.example.amattang.domain.answer.AnswerD;
+import com.example.amattang.domain.answer.AnswerDAnswer;
 import com.example.amattang.domain.commonQuestion.CommonQuestionTypeD;
 import com.example.amattang.domain.commonQuestion.QuestionTemplate;
 import io.swagger.annotations.ApiModel;
@@ -9,8 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Builder
@@ -34,11 +35,26 @@ public class AnswerDDto {
 
     public static AnswerDDto fromQuestion(CommonQuestionTypeD question) {
         List<Answer> answer = new ArrayList<>();
+        Collections.sort(question.getTemplates(), (n, m) -> n.getId().compareTo(m.getId()));
         for (QuestionTemplate q : question.getTemplates()) {
             answer.add(new Answer(q.getTemplate(), false));
         }
         return AnswerDDto.builder()
                 .answer(answer)
+                .build();
+    }
+
+    public static AnswerDDto fromAnswer(CommonQuestionTypeD question, AnswerD answer, Long id) {
+        List<Answer> list = new ArrayList<>();
+        Collections.sort(question.getTemplates(), (n, m) -> n.getId().compareTo(m.getId()));
+//
+//        for (AnswerDAnswer a : answer.getAnswers()) {
+//            list.add(new Answer(a.getType(), a.isAns()));
+//        }
+
+        return AnswerDDto.builder()
+                .answerId(id)
+                .answer(list)
                 .build();
     }
 }

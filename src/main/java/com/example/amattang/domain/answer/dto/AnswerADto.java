@@ -1,5 +1,7 @@
 package com.example.amattang.domain.answer.dto;
 
+import com.example.amattang.domain.answer.AnswerA;
+import com.example.amattang.domain.commonQuestion.CommonQuestion;
 import com.example.amattang.domain.commonQuestion.CommonQuestionTypeA;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -41,6 +43,16 @@ public class AnswerADto {
         Answer answerFalse = new Answer("아니오", false, (question.getRedType().equals(REDTYPE.FALSE))? true : false);
         ArrayList arrayList = new ArrayList(Arrays.asList(answerTrue, answerFalse));
         return AnswerADto.builder()
+                .ans(arrayList)
+                .build();
+    }
+
+    public static AnswerADto fromAnswer(CommonQuestionTypeA question, AnswerA answer, Long id) {
+        Answer answerTrue = new Answer("예", answer.getAnsTrue(), (question.getRedType().equals(REDTYPE.TRUE))? true : false);
+        Answer answerFalse = new Answer("아니오", answer.getAnsFalse(), (question.getRedType().equals(REDTYPE.FALSE))? true : false);
+        ArrayList arrayList = new ArrayList(Arrays.asList(answerTrue, answerFalse));
+        return AnswerADto.builder()
+                .answerId(id)
                 .ans(arrayList)
                 .build();
     }
