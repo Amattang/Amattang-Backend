@@ -4,7 +4,9 @@ import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Component
@@ -73,5 +75,18 @@ public class TokenProvider {
 
         return claims.getSubject();
     }
+
+    public String getJwtAccessFromHeader(HttpServletRequest request) {
+        String accessToken = request.getHeader("Authorization");
+        return getJwtAccessFromFullToken(accessToken);
+    }
+
+    public String getJwtAccessFromFullToken(String accessToken) {
+        if (StringUtils.hasText(accessToken) && accessToken.startsWith("Bearer")) {
+            return accessToken.substring(7, accessToken.length());
+        }
+        return null;
+    }
+
 
 }

@@ -30,7 +30,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         try {
-            String accessToken = getJwtAccessFromHeader(request);
+            String accessToken = tokenProvider.getJwtAccessFromHeader(request);
 
             if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) {
                 String userId = tokenProvider.getUserIdFromToken(accessToken);
@@ -50,11 +50,5 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
 
-    String getJwtAccessFromHeader(HttpServletRequest request) {
-        String accessToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(accessToken) && accessToken.startsWith("Bearer")) {
-            return accessToken.substring(7, accessToken.length());
-        }
-        return null;
-    }
+
 }
