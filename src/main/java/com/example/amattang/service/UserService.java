@@ -38,6 +38,7 @@ public class UserService {
 
     public ReIssueTokenResponseDto reIssueToken(ReIssueTokenRequestDto dto) {
         String request = dto.getRequest().toLowerCase();
+        String token = tokenProvider.getJwtAccessFromFullToken(dto.getToken());
         if (request.equals("access")) {
             return reIssueAccessToken(dto.getToken());
         } else if (request.equals("refresh")) {
