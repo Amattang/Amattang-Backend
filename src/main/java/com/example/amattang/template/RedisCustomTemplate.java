@@ -1,4 +1,4 @@
-package com.example.amattang.redisTemplate;
+package com.example.amattang.template;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;

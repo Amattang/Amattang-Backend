@@ -1,4 +1,4 @@
-package com.example.amattang.redisTemplate;
+package com.example.amattang.template;
 
 import com.example.amattang.configuration.RedisConfig;
 import org.junit.jupiter.api.*;

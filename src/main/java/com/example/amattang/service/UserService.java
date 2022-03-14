@@ -5,7 +5,7 @@ import com.example.amattang.payload.reponse.LoginResponseDto;
 import com.example.amattang.payload.reponse.ReIssueTokenResponseDto;
 import com.example.amattang.payload.request.LoginRequestDto;
 import com.example.amattang.payload.request.ReIssueTokenRequestDto;
-import com.example.amattang.redisTemplate.RedisCustomTemplate;
+import com.example.amattang.template.RedisCustomTemplate;
 import com.example.amattang.security.CustomUserDetailsService;
 import com.example.amattang.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
