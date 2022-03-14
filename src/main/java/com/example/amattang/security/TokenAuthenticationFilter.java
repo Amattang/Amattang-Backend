@@ -29,6 +29,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        log.debug("do filter => token authentication filter");
         try {
             String accessToken = getJwtAccessFromHeader(request);
 
@@ -36,7 +37,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 String userId = tokenProvider.getUserIdFromToken(accessToken);
                 if (redisTemplate.hasKey(String.valueOf(userId))) {
                     UserDetails userDetails = customUserDetailsService.loadUserByUserId(userId);
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null);
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
