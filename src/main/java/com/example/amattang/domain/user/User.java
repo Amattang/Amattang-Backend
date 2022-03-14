@@ -24,4 +24,8 @@ public class User {
         KAKAO, APPLE
     }
 
+    public enum ROLE {
+        USER
+    }
+
 }

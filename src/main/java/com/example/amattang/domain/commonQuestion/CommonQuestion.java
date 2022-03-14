@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @AllArgsConstructor
@@ -46,6 +47,55 @@ public abstract class CommonQuestion {
 
         MAIN_CATEGORY(String msg) {
             this.msg = msg;
+        }
+
+        public static Optional<MAIN_CATEGORY> fromMsg(String msg) {
+            switch (msg) {
+                case "외부시설":
+                    return Optional.of(OUTSIDE);
+                case "내부시설":
+                    return Optional.of(INSIDE);
+                case "옵션":
+                    return Optional.of(OPTIONS);
+                case "기본정보":
+                    return Optional.of(BASIC);
+                default:
+                    return Optional.ofNullable(null);
+            }
+        }
+    }
+
+
+    @Getter
+    public enum SUB_CATEGORY {
+        WALL("벽"),
+        KITCHEN("부엌"),
+        WINDOW("창문"),
+        ENTRANCE("현관"),
+        RESTROOM("화장실"),
+        NONE("none");
+
+        private String msg;
+
+        SUB_CATEGORY(String msg) {
+            this.msg = msg;
+        }
+
+        public static Optional<SUB_CATEGORY> fromMsg(String msg) {
+            switch (msg) {
+                case "벽":
+                    return Optional.of(WALL);
+                case "부엌":
+                    return Optional.of(KITCHEN);
+                case "창문":
+                    return Optional.of(WINDOW);
+                case "현관":
+                    return Optional.of(ENTRANCE);
+                case "화장실":
+                    return Optional.of(RESTROOM);
+                default:
+                    return Optional.ofNullable(null);
+            }
         }
     }
 
