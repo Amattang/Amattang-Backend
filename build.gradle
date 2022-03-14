@@ -44,6 +44,10 @@ dependencies {
 
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+
 }
 
 tasks.named('test') {
