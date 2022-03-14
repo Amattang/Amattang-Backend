@@ -31,7 +31,7 @@ public class AnswerADto {
         private String type;
 
         @ApiModelProperty(name = "답변", example = "true")
-        private boolean ans;
+        private boolean val;
 
         @ApiModelProperty(name = "어떤 경우 빨간색으로 표시하면 되는가?", example = "true")
         private boolean redType;

@@ -5,6 +5,7 @@ import com.example.amattang.domain.answer.dto.*;
 import com.example.amattang.domain.checkList.CheckList;
 import com.example.amattang.domain.checkList.CheckListRepository;
 import com.example.amattang.domain.commonQuestion.*;
+import com.example.amattang.domain.commonQuestion.CommonQuestion.MAIN_CATEGORY;
 import com.example.amattang.domain.image.Image;
 import com.example.amattang.domain.image.ImageRepository;
 import com.example.amattang.domain.listToQuestion.ListToQuestion;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,7 +57,7 @@ public class CommonQuestionService {
         List<ListToQuestion> listCommonQuestion = checkList.getListCommonQuestion();
 
         List<CommonQuestionDto> list1 = listCommonQuestion.stream()
-                .filter(w -> (subCategory == null) ?
+                .filter(w -> !(main.equals(MAIN_CATEGORY.INSIDE.getMsg())) ?
                         w.getCommonQuestionId().getMainCategory().equals(main) && w.getVisibility().equals(visibility):
                                 w.getCommonQuestionId().getMainCategory().equals(main) && w.getCommonQuestionId().getSubCategory().equals(subCategory) && w.getVisibility().equals(visibility)
                         )
@@ -80,23 +82,23 @@ public class CommonQuestionService {
 
     public List<? extends Object> mapFromQuestionToTypeAnswer(CommonQuestion question) {
         if (question.getAnsType().equals("A")) {
-            return AnswerADto.fromQuestion(entityManager.find(CommonQuestionTypeA.class, question.getId()));
+            return AnswerADto.fromQuestion(entityManager.getReference(CommonQuestionTypeA.class, question.getId()));
         } else if (question.getAnsType().equals("B")) {
-            return AnswerBDto.fromQuestion(entityManager.find(CommonQuestionTypeB.class, question.getId()));
+            return AnswerBDto.fromQuestion(entityManager.getReference(CommonQuestionTypeB.class, question.getId()));
         } else if (question.getAnsType().equals("C")) {
             //이미지 타입으로 변경
             return null;
         } else if (question.getAnsType().equals("D")) {
-            return AnswerDDto.fromQuestion(entityManager.find(CommonQuestionTypeD.class, question.getId()));
+            return AnswerDDto.fromQuestion(entityManager.getReference(CommonQuestionTypeD.class, question.getId()));
         } else {
             return null;
         }
     }
     public List<? extends Object> mapFromQuestionToTypeAnswer(CommonQuestion question, QuestionToAnswer questionToAnswer, CheckList checkList) {
         if (question.getAnsType().equals("A")) {
-            return AnswerADto.fromAnswer(entityManager.find(CommonQuestionTypeA.class, question.getId()), questionToAnswer.getAnswerList(), questionToAnswer.getId());
+            return AnswerADto.fromAnswer(entityManager.getReference(CommonQuestionTypeA.class, question.getId()), questionToAnswer.getAnswerList(), questionToAnswer.getId());
         } else if (question.getAnsType().equals("B")) {
-            return AnswerBDto.fromAnswer(entityManager.find(CommonQuestionTypeB.class, question.getId()), questionToAnswer.getAnswerList(), questionToAnswer.getId());
+            return AnswerBDto.fromAnswer(entityManager.getReference(CommonQuestionTypeB.class, question.getId()), questionToAnswer.getAnswerList(), questionToAnswer.getId());
         } else if (question.getAnsType().equals("C")) {
             Optional<List<Image>> optionalImages = imageRepository.findAllByCheckListId_Id(checkList.getId());
 
@@ -109,7 +111,7 @@ public class CommonQuestionService {
                     .map(x -> new AnswerCDto(x.getId(), x.getUrl()))
                     .collect(Collectors.toList());
         } else {
-            return AnswerDDto.fromAnswer(entityManager.find(CommonQuestionTypeD.class, question.getId()), questionToAnswer.getAnswerList(), questionToAnswer.getId());
+            return AnswerDDto.fromAnswer(entityManager.getReference(CommonQuestionTypeD.class, question.getId()), questionToAnswer.getAnswerList(), questionToAnswer.getId());
         }
     }
 
@@ -119,15 +121,17 @@ public class CommonQuestionService {
         CheckList checkList = checkListRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(NOT_EXIST_CHECK_LIST));
         isCorrectAuthor(user.getId(), checkList.getUser().getId());
         List<ListToQuestion> listCommonQuestion = checkList.getListCommonQuestion();
+        List<Question> question = dto.getQuestion();
+        Collections.sort(question, (a,b) -> a.getId().compareTo(b.getId()));
         int i = 0;
         for (ListToQuestion q : listCommonQuestion) {
-            if (i == dto.getQuestion().size()) break;
+            if (i == question.size()) break;
 
-            Question question = dto.getQuestion().get(i);
+            Question question1 = question.get(i);
 
-            if (q.getCommonQuestionId().getId() == question.getId()) {
-                q.setVisibility(question.getVisibility());
-                if (!question.getVisibility()) {
+            if (q.getCommonQuestionId().getId() == question1.getId()) {
+                q.setVisibility(question1.getVisibility());
+                if (!question1.getVisibility()) {
                     q.deleteAnswer();
                 }
                 i++;

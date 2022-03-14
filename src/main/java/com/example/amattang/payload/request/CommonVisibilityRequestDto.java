@@ -2,17 +2,21 @@ package com.example.amattang.payload.request;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.validation.BindException;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
 public class CommonVisibilityRequestDto {
 
-    @Min(value = 1, message = "question을 입력해주세요")
+    @Size(min = 1, message = "question을 입력해주세요")
     List<Question> question;
 
     @Data
