@@ -41,3 +41,4 @@ gradlew
 *.bat
 .gradle/
 .gradle
+**/dataSet/**

@@ -1,10 +1,12 @@
 package com.example.amattang.domain.image;
 
 import com.example.amattang.domain.checkList.CheckList;
+import lombok.Getter;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
 @Table(name = "check_list_image")
 public class Image {
 

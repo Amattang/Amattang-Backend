@@ -38,6 +38,7 @@ dependencies {
 		exclude module: 'swagger-annotations'
 		exclude module: 'swagger-models'
 	}
+	runtimeOnly 'com.h2database:h2'
 	implementation("io.swagger:swagger-annotations:1.5.21")
 	implementation("io.swagger:swagger-models:1.5.21")
 
@@ -48,3 +49,5 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+
