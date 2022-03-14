@@ -7,20 +7,16 @@ import com.example.amattang.domain.commonQuestion.CommonQuestion;
 import com.example.amattang.domain.commonQuestion.CommonQuestionRepository;
 import com.example.amattang.domain.listToQuestion.ListToQuestion;
 import com.example.amattang.domain.user.User;
-import com.example.amattang.exception.NotAccessUserException;
 import com.example.amattang.payload.reponse.CommonCheckListDto;
 import com.example.amattang.payload.reponse.CommonQuestionDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.amattang.domain.commonQuestion.CommonQuestion.MAIN_CATEGORY.OUTSIDE;
-import static com.example.amattang.exception.ExceptionMessage.NOT_ACCESS_USER;
-import static com.example.amattang.exception.ExceptionMessage.NOT_EXIST_CHECK_LIST;
 
 @Slf4j
 @Service
@@ -42,7 +38,7 @@ public class CheckListService {
                 .map(x -> ListToQuestion.builder()
                         .commonQuestionId(x)
                         .checkListId(checkList)
-                        .visibility(false)
+                        .visibility(true)
                         .build()
                 )
                 .collect(Collectors.toList());

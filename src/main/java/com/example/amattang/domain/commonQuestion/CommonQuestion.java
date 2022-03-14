@@ -31,6 +31,10 @@ public abstract class CommonQuestion {
     @Column(name = "ans_type")
     private String ansType;
 
+    @OneToMany(mappedBy = "question")
+//    @Builder.Default
+    private List<QuestionTemplate> templates = new ArrayList<>();
+
     @Getter
     public enum MAIN_CATEGORY {
         OUTSIDE("외부시설"),
@@ -44,5 +48,6 @@ public abstract class CommonQuestion {
             this.msg = msg;
         }
     }
+
 
 }

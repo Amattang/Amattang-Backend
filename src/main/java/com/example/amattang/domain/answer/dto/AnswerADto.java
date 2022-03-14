@@ -1,8 +1,9 @@
 package com.example.amattang.domain.answer.dto;
 
-import com.example.amattang.domain.answer.AnswerA;
-import com.example.amattang.domain.commonQuestion.CommonQuestion;
+import com.example.amattang.domain.answer.Answer;
+import com.example.amattang.domain.answer.AnswerBool;
 import com.example.amattang.domain.commonQuestion.CommonQuestionTypeA;
+import com.example.amattang.domain.commonQuestion.QuestionTemplate;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +12,7 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -18,9 +20,6 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 public class AnswerADto {
-
-    @ApiModelProperty(value = "답변 아이디", example = "1")
-    private Long answerId;
 
     List<Answer> ans;
 
@@ -38,23 +37,36 @@ public class AnswerADto {
         private boolean redType;
     }
 
-    public static AnswerADto fromQuestion(CommonQuestionTypeA question) {
-        Answer answerTrue = new Answer("예", false, (question.getRedType().equals(REDTYPE.TRUE))? true : false);
-        Answer answerFalse = new Answer("아니오", false, (question.getRedType().equals(REDTYPE.FALSE))? true : false);
-        ArrayList arrayList = new ArrayList(Arrays.asList(answerTrue, answerFalse));
-        return AnswerADto.builder()
-                .ans(arrayList)
-                .build();
+    public static List<Answer> fromQuestion(CommonQuestionTypeA question) {
+
+        List<Answer> list = new ArrayList<>();
+
+        for (QuestionTemplate q : question.getTemplates()) {
+            list.add(new Answer(q.getTemplate(), false, q.isRedType()));
+        }
+
+//        Answer answerTrue = new Answer("예", false, (question.getRedType().equals(REDTYPE.TRUE))? true : false);
+//        Answer answerFalse = new Answer("아니오", false, (question.getRedType().equals(REDTYPE.FALSE))? true : false);
+//        ArrayList arrayList = new ArrayList(Arrays.asList(answerTrue, answerFalse));
+//        return AnswerADto.builder()
+//                .ans(list)
+//                .build();
+        return list;
     }
 
-    public static AnswerADto fromAnswer(CommonQuestionTypeA question, AnswerA answer, Long id) {
-        Answer answerTrue = new Answer("예", answer.getAnsTrue(), (question.getRedType().equals(REDTYPE.TRUE))? true : false);
-        Answer answerFalse = new Answer("아니오", answer.getAnsFalse(), (question.getRedType().equals(REDTYPE.FALSE))? true : false);
-        ArrayList arrayList = new ArrayList(Arrays.asList(answerTrue, answerFalse));
-        return AnswerADto.builder()
-                .answerId(id)
-                .ans(arrayList)
-                .build();
+    public static List<Answer> fromAnswer(CommonQuestionTypeA question, List<com.example.amattang.domain.answer.Answer> answer, Long id) {
+        Collections.sort(answer, (a,b) -> a.getId().compareTo(b.getId()));
+        List<Answer> list = new ArrayList<>();
+
+        for (com.example.amattang.domain.answer.Answer a : answer) {
+            list.add(new Answer(a.getType(), ((AnswerBool) a).isAns(), a.isRedType()));
+        }
+
+//        return AnswerADto.builder()
+//                .id(id)
+//                .ans(list)
+//                .build();
+        return list;
     }
 
 

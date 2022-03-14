@@ -1,13 +1,11 @@
 package com.example.amattang.domain.listToQuestion;
 
-import com.example.amattang.domain.answer.Answer;
+import com.example.amattang.domain.answer.QuestionToAnswer;
 import com.example.amattang.domain.checkList.CheckList;
 import com.example.amattang.domain.commonQuestion.CommonQuestion;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -31,9 +29,15 @@ public class ListToQuestion {
     @JoinColumn(name = "common_question_question_id")
     private CommonQuestion commonQuestionId;
 
+    @Setter
     private Boolean visibility;
 
-    @OneToOne(mappedBy = "listToQuestionId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Answer answer;
+    @Setter
+    @OneToOne(mappedBy = "listToQuestion", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    private QuestionToAnswer questionToAnswer;
+
+    public void deleteAnswer() {
+        this.questionToAnswer = null;
+    }
 
 }

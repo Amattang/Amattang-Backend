@@ -1,7 +1,7 @@
 package com.example.amattang.domain.answer.dto;
 
-import com.example.amattang.domain.answer.AnswerD;
-import com.example.amattang.domain.answer.AnswerDAnswer;
+import com.example.amattang.domain.answer.Answer;
+import com.example.amattang.domain.answer.AnswerBool;
 import com.example.amattang.domain.commonQuestion.CommonQuestionTypeD;
 import com.example.amattang.domain.commonQuestion.QuestionTemplate;
 import io.swagger.annotations.ApiModel;
@@ -19,7 +19,10 @@ import java.util.*;
 public class AnswerDDto {
 
     @ApiModelProperty(value = "답변 아이디", example = "45")
-    private Long answerId;
+    private Long id;
+
+//    @ApiModelProperty(value = "중복 선택 가능 여부", example = "true")
+//    private boolean duplication;
 
     List<Answer> answer;
 
@@ -33,28 +36,32 @@ public class AnswerDDto {
         private boolean val;
     }
 
-    public static AnswerDDto fromQuestion(CommonQuestionTypeD question) {
+    public static List<Answer> fromQuestion(CommonQuestionTypeD question) {
         List<Answer> answer = new ArrayList<>();
-        Collections.sort(question.getTemplates(), (n, m) -> n.getId().compareTo(m.getId()));
-        for (QuestionTemplate q : question.getTemplates()) {
+        List<QuestionTemplate> templates = question.getTemplates();
+        Collections.sort(templates, (n, m) -> n.getId().compareTo(m.getId()));
+        for (QuestionTemplate q : templates) {
             answer.add(new Answer(q.getTemplate(), false));
         }
-        return AnswerDDto.builder()
-                .answer(answer)
-                .build();
+//        return AnswerDDto.builder()
+//                .answer(answer)
+//                .build();
+        return answer;
     }
 
-    public static AnswerDDto fromAnswer(CommonQuestionTypeD question, AnswerD answer, Long id) {
+    public static List<Answer> fromAnswer(CommonQuestionTypeD question, List<com.example.amattang.domain.answer.Answer> answer, Long id) {
         List<Answer> list = new ArrayList<>();
         Collections.sort(question.getTemplates(), (n, m) -> n.getId().compareTo(m.getId()));
-//
-//        for (AnswerDAnswer a : answer.getAnswers()) {
-//            list.add(new Answer(a.getType(), a.isAns()));
-//        }
 
-        return AnswerDDto.builder()
-                .answerId(id)
-                .answer(list)
-                .build();
+        for (com.example.amattang.domain.answer.Answer a : answer) {
+            list.add(new Answer(a.getType(), ((AnswerBool) a).isAns()));
+        }
+
+//        return AnswerDDto.builder()
+//                .id(id)
+////                .duplication(question.getDuplication())
+//                .answer(list)
+//                .build();
+        return list;
     }
 }

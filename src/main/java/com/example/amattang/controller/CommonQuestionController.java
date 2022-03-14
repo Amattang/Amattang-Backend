@@ -5,11 +5,12 @@ import com.example.amattang.domain.user.UserRepository;
 import com.example.amattang.payload.reponse.CommonCheckListDto;
 import com.example.amattang.payload.reponse.CommonQuestionDto;
 import com.example.amattang.payload.reponse.ResponseUtil;
-import com.example.amattang.payload.request.CommonReqeustDto;
+import com.example.amattang.payload.request.CommonRequestDto;
 import com.example.amattang.payload.request.CommonVisibilityRequestDto;
 import com.example.amattang.security.CurrentUser;
 import com.example.amattang.security.UserPrincipal;
 import com.example.amattang.service.CheckListService;
+import com.example.amattang.service.CommonQuestionAnswerService;
 import com.example.amattang.service.CommonQuestionService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -18,8 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
+import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
 import static com.example.amattang.payload.reponse.ResponseMessage.*;
@@ -31,9 +31,10 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequestMapping("/api/check-list")
 public class CommonQuestionController {
 
+    private final CommonQuestionAnswerService answerService;
+    private final CommonQuestionService questionService;
     private final CheckListService checkListService;
     private final UserRepository userRepository;
-    private final CommonQuestionService questionService;
 
 
     //리스트가 없는 경우
@@ -67,8 +68,9 @@ public class CommonQuestionController {
             @ApiImplicitParam(name = "CommonQuestionReqeustDto", value = "카테고리 아이디와 답변 목록")
     })
     @PutMapping("/{checkListId}/common/question")
-    public ResponseEntity<?> doc5(@PathVariable("checkListId") Long checkListId, @RequestBody CommonReqeustDto dto) {
-
+    public ResponseEntity<?> doc5(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") Long checkListId, @RequestBody @Valid CommonRequestDto dto) {
+        User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
+        answerService.updateAnswer(user, checkListId, dto);
         return succes(CREATED, UPDATE_CHECK_LIST_ANSWER);
     }
 
@@ -78,9 +80,9 @@ public class CommonQuestionController {
             @ApiImplicitParam(name = "questionIds", value = "(삭제(추가)할 질문 아이디, 삭제 여부) 리스트")
     })
     @PutMapping("/{checkListId}/common/question/status")
-    public ResponseEntity<?> doc4(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") Long checkListId, @RequestBody List<CommonVisibilityRequestDto> dto) {
+    public ResponseEntity<?> doc4(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") @Valid Long checkListId, @RequestBody CommonVisibilityRequestDto dto) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
-
+        questionService.updateCommonQuestionStatus(user, checkListId, dto);
         return succes(CREATED, UPDATE_CHECK_LIST_QUESTION_STATUS);
     }
 
