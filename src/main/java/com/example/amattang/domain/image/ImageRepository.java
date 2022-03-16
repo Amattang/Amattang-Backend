@@ -7,7 +7,11 @@ import java.util.Optional;
 
 public interface ImageRepository extends JpaRepository<Image, Long> {
 
-    Optional<List<Image>> findAllByCheckListId_Id(Long id);
+    List<Image> findAllByCheckListId_Id(Long id);
 
+    Optional<Image> findByCheckListId_IdAndId(Long checkList, Long id);
+
+    @Override
+    List<Image> findAllById(Iterable<Long> longs);
 
 }
