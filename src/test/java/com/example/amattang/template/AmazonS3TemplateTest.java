@@ -18,7 +18,7 @@ class AmazonS3TemplateTest {
     @DisplayName("s3 이미지 업로드 테스트")
     public String putObjectTest() throws IOException {
         MockMultipartFile mockMultipartFile = new MockMultipartFile("spring.png", new ClassPathResource("/test/spring.png").getInputStream());
-        String fileName = amazonS3Template.converFileNameToMd5("spring.png");
+        String fileName = amazonS3Template.convertFileNameToMd5("spring.png");
         amazonS3Template.putImage(mockMultipartFile, fileName);
         return fileName;
     }
