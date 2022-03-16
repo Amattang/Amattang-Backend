@@ -1,14 +1,13 @@
 package com.example.amattang.domain.checkList;
 
+import com.example.amattang.domain.image.Image;
 import com.example.amattang.domain.listToQuestion.ListToQuestion;
 import com.example.amattang.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -32,6 +31,9 @@ public class CheckList {
     @Setter
     @OneToMany(mappedBy = "checkListId", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     List<ListToQuestion> listCommonQuestion = new ArrayList<>();
+
+    @OneToMany(mappedBy = "checkListId", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    List<Image> imageList = new ArrayList<>();
 
     public CheckList(User user, Boolean pinned) {
         this.user = user;

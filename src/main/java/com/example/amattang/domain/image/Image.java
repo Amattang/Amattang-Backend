@@ -1,12 +1,15 @@
 package com.example.amattang.domain.image;
 
 import com.example.amattang.domain.checkList.CheckList;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "check_list_image")
 public class Image {
 
@@ -22,4 +25,18 @@ public class Image {
     private String url;
 
     private boolean main;
+
+    public Image(CheckList checkListId, String url) {
+        this.checkListId = checkListId;
+        this.url = url;
+        this.main = false;
+    }
+
+    public void deleteMain() {
+        this.main = false;
+    }
+
+    public void addMain() {
+        this.main = true;
+    }
 }

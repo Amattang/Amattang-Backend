@@ -100,13 +100,12 @@ public class CommonQuestionService {
         } else if (question.getAnsType().equals("B")) {
             return AnswerBDto.fromAnswer(entityManager.getReference(CommonQuestionTypeB.class, question.getId()), questionToAnswer.getAnswerList(), questionToAnswer.getId());
         } else if (question.getAnsType().equals("C")) {
-            Optional<List<Image>> optionalImages = imageRepository.findAllByCheckListId_Id(checkList.getId());
+            List<Image> imageList = imageRepository.findAllByCheckListId_Id(checkList.getId());
 
-            if (optionalImages.isEmpty()) {
+            if (imageList.isEmpty()) {
                 return null;
             }
 
-            List<Image> imageList = optionalImages.get();
             return imageList.stream()
                     .map(x -> new AnswerCDto(x.getId(), x.getUrl()))
                     .collect(Collectors.toList());

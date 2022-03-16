@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -22,7 +23,7 @@ public class AdviceController {
         return fail(HttpStatus.BAD_REQUEST, result.getFieldError().getDefaultMessage());
     }
 
-    @ExceptionHandler(value = {IllegalArgumentException.class, MissingServletRequestParameterException.class})
+    @ExceptionHandler(value = {IllegalArgumentException.class, MissingServletRequestParameterException.class, HttpRequestMethodNotSupportedException.class})
     public ResponseEntity<DefaultResponse> IllegalArgumentHandler(Exception e) {
         return fail(HttpStatus.BAD_REQUEST, e.getMessage());
     }
