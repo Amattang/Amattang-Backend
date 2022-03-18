@@ -1,10 +1,19 @@
 package com.example.amattang.domain.customCategory;
 
+import com.example.amattang.domain.checkList.CheckList;
+import com.example.amattang.domain.customQuestion.CustomQuestion;
 import com.example.amattang.domain.user.User;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class CustomCategory {
 
     @Id
@@ -12,9 +21,14 @@ public class CustomCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "user_user_id")
-    private User user;
+    @JoinColumn(name = "check_list_check_list_id")
+    private CheckList checkListId;
+
+    @Setter
+    @OneToMany(mappedBy = "customCategoryId", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    Set<CustomQuestion> customQuestions = new HashSet<>();
 }
