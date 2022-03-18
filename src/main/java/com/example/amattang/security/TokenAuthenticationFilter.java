@@ -2,7 +2,6 @@ package com.example.amattang.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +22,6 @@ import java.io.IOException;
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
-    private final RedisTemplate redisTemplate;
     private final CustomUserDetailsService customUserDetailsService;
 
     @Override
@@ -35,12 +33,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
             if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) {
                 String userId = tokenProvider.getUserIdFromToken(accessToken);
-                if (redisTemplate.hasKey(String.valueOf(userId))) {
-                    UserDetails userDetails = customUserDetailsService.loadUserByUserId(userId);
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                }
+
+                UserDetails userDetails = customUserDetailsService.loadUserByUserId(userId);
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
 
         } catch (Exception e) {

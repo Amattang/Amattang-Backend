@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static com.example.amattang.exception.ExceptionMessage.NOT_FOUND_USER;
+
 @Component
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -29,7 +31,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
     @Transactional
     public UserDetails loadUserByUserId(String userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException());
+        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException(NOT_FOUND_USER + "id => " + userId));
+
         return UserPrincipal.create(user);
     }
 
