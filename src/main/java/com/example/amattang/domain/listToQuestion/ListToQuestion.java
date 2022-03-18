@@ -30,7 +30,7 @@ public class ListToQuestion {
     private CommonQuestion commonQuestionId;
 
     @Setter
-    private Boolean visibility;
+    private boolean visibility;
 
     @Setter
     @OneToOne(mappedBy = "listToQuestion", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)

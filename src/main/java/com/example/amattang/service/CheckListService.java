@@ -1,6 +1,5 @@
 package com.example.amattang.service;
 
-import com.example.amattang.domain.answer.AnswerRepository;
 import com.example.amattang.domain.checkList.CheckList;
 import com.example.amattang.domain.checkList.CheckListRepository;
 import com.example.amattang.domain.commonQuestion.CommonQuestion;
@@ -26,7 +25,6 @@ public class CheckListService {
     private final CommonQuestionRepository questionRepository;
     private final CheckListRepository checkListRepository;
     private final CommonQuestionService questionService;
-    private final AnswerRepository answerRepository;
 
 
     //체크리스트 생성
