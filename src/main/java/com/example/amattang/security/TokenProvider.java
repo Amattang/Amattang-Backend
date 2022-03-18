@@ -13,6 +13,9 @@ import java.util.Date;
 @Slf4j
 public class TokenProvider {
 
+    @Value("${app.token.issuer}")
+    private String issuer;
+
     @Value("${app.token.secret}")
     private String tokenSecret;
 
@@ -23,27 +26,21 @@ public class TokenProvider {
     private long refreshTokenExpirationSec;
 
     public enum TokenType {
-        AUTHORIZATION,
+        ACCESS,
         REFRESH
     }
 
     private JwtBuilder jwtBuilder(Date date) {
         return Jwts.builder()
-                .setIssuer(tokenSecret)
+                .setIssuer(issuer)
                 .setIssuedAt(date)
                 .signWith(SignatureAlgorithm.HS512, tokenSecret);
     }
 
-    public String createJwtAccessToken(String userId, Date date) {
+    public String createJwtToken(String userId, Date date, TokenType type) {
         return jwtBuilder(date)
                 .setSubject(userId)
-                .setExpiration(new Date(date.getTime() + accessTokenExpirationSec))
-                .compact();
-    }
-
-    public String createJwtRefreshToken(Date date) {
-        return jwtBuilder(date)
-                .setExpiration(new Date(date.getTime() + refreshTokenExpirationSec))
+                .setExpiration(new Date(date.getTime() + ((type.equals(TokenType.ACCESS)?accessTokenExpirationSec:refreshTokenExpirationSec))))
                 .compact();
     }
 
