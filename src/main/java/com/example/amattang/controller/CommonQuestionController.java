@@ -55,8 +55,7 @@ public class CommonQuestionController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "checkListId", value = "체크리스트 아이디", paramType = "path"),
             @ApiImplicitParam(name="mainCategory", value = "체크리스트의 1차 카테고리",paramType = "param", required = true),
-            @ApiImplicitParam(name="subCategory", value = "체크리스트의 2차 카테고리", paramType = "param"),
-            @ApiImplicitParam(name="visibility", value = "체크리스트에서의 질문 삭제 여부", paramType = "param", required = true),
+            @ApiImplicitParam(name="subCategory", value = "체크리스트의 2차 카테고리", paramType = "param")
     })
     @GetMapping("/{checkListId}/common")
     public ResponseEntity<?> getCommonQuestionListByCategory(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") Long checkListId, @RequestParam("mainCategory") String mainCategory, @RequestParam(value = "subCategory", required = false) String subCategory) {
