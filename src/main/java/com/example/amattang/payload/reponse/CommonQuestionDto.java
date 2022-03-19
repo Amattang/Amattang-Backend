@@ -25,17 +25,19 @@ public class CommonQuestionDto {
     private String rule;
     @ApiModelProperty(name = "항목 설명", example = "반지하층~1.5층은 방범창 또는 철장을 요구할 수 있어요")
     private String description;
-    @ApiModelProperty(name = "이모지", example = ":)")
+    @ApiModelProperty(name = "이모지", example = "smile")
     private String emoji;
     @ApiModelProperty(name = "답변 타입", example = "B")
     private String type;
+    @ApiModelProperty(name = "질문 삭제 여부", example = "true")
+    private boolean visibility;
 
     @ApiModelProperty(name = "질문에 대한 답변", notes = "답변이 없는 경우에도 초기화하여 반환, 각 타입은 아래 model에서 확인, AnswerADto, AnswerBDto, AnswerCDto, AnswerDDto")
     private List answer;
 
     //문서에 어떻게 적어야 하는지 모르겠다
 
-    public static CommonQuestionDto fromQuestion(CommonQuestion question, List answer) {
+    public static CommonQuestionDtoBuilder fromQuestionBuilder(CommonQuestion question, List answer) {
         return CommonQuestionDto.builder()
                 .questionId(question.getId())
                 .question(question.getQuestion())
@@ -45,7 +47,16 @@ public class CommonQuestionDto {
                 .description(question.getDescription())
                 .emoji(question.getEmoji())
                 .type(question.getAnsType())
-                .answer(answer)
+                .answer(answer);
+    }
+
+    public static CommonQuestionDto fromQuestion(CommonQuestion question, List answer, boolean visibility) {
+        return fromQuestionBuilder(question, answer)
+                .visibility(visibility)
+                .build();
+    }
+    public static CommonQuestionDto fromQuestion(CommonQuestion question, List answer) {
+        return fromQuestionBuilder(question, answer)
                 .build();
     }
 

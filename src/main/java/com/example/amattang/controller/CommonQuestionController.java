@@ -59,8 +59,7 @@ public class CommonQuestionController {
             @ApiImplicitParam(name="visibility", value = "체크리스트에서의 질문 삭제 여부", paramType = "param", required = true),
     })
     @GetMapping("/{checkListId}/common")
-    public ResponseEntity<?> getCommonQuestionListByCategory(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") Long checkListId, @RequestParam("mainCategory") String mainCategory,
-                               @RequestParam(value = "subCategory", required = false) String subCategory, @RequestParam(value = "visibility") Boolean visibility) {
+    public ResponseEntity<?> getCommonQuestionListByCategory(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") Long checkListId, @RequestParam("mainCategory") String mainCategory, @RequestParam(value = "subCategory", required = false) String subCategory) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
         MAIN_CATEGORY main = MAIN_CATEGORY.fromMsg(mainCategory).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 메인 카테고리입니다."));
         if (main.equals(MAIN_CATEGORY.INSIDE) && subCategory == null) {
@@ -70,14 +69,13 @@ public class CommonQuestionController {
         if (subCategory != null) {
             sub = SUB_CATEGORY.fromMsg(subCategory).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 서브 카테고리입니다."));
         }
-        CommonCheckListDto commonCheckListDto = questionService.getCheckListQuestionsWithAnswer(user, checkListId, main.getMsg(), sub.getMsg(), visibility);
+        CommonCheckListDto commonCheckListDto = questionService.getCheckListQuestionsWithAnswer(user, checkListId, main.getMsg(), sub.getMsg());
         return succes(commonCheckListDto, GET_CHECK_LIST_CATEGORY);
     }
 
     @ApiOperation(value = "2-3. 답변 등록하기", notes = "타입을 어떻게 나눠서 요청받을 수 있을까")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "checkListId", value = "체크리스트 아이디", paramType = "path"),
-            @ApiImplicitParam(name = "CommonQuestionReqeustDto", value = "카테고리 아이디와 답변 목록")
+            @ApiImplicitParam(name = "checkListId", value = "체크리스트 아이디", paramType = "path")
     })
     @PutMapping("/{checkListId}/common/question")
     public ResponseEntity<?> saveAnswerToCommonQuestion(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") Long checkListId, @RequestBody @Valid CommonRequestDto dto) {
@@ -88,8 +86,7 @@ public class CommonQuestionController {
 
     @ApiOperation(value = "2-4.삭제했던 질문 다시 추가하기 / 질문 삭제하기 (질문 상태 변경)", response = ResponseUtil.class)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "checkListId", value = "체크리스트 아이디", paramType = "path"),
-            @ApiImplicitParam(name = "questionIds", value = "(삭제(추가)할 질문 아이디, 삭제 여부) 리스트")
+            @ApiImplicitParam(name = "checkListId", value = "체크리스트 아이디", paramType = "path")
     })
     @PutMapping("/{checkListId}/common/question/status")
     public ResponseEntity<?> changeStatusCommonQuestion(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") @Valid Long checkListId, @RequestBody @Valid CommonVisibilityRequestDto dto) {

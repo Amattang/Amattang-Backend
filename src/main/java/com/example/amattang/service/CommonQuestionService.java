@@ -1,7 +1,10 @@
 package com.example.amattang.service;
 
-import com.example.amattang.domain.answer.*;
-import com.example.amattang.domain.answer.dto.*;
+import com.example.amattang.domain.answer.QuestionToAnswer;
+import com.example.amattang.domain.answer.dto.AnswerADto;
+import com.example.amattang.domain.answer.dto.AnswerBDto;
+import com.example.amattang.domain.answer.dto.AnswerCDto;
+import com.example.amattang.domain.answer.dto.AnswerDDto;
 import com.example.amattang.domain.checkList.CheckList;
 import com.example.amattang.domain.checkList.CheckListRepository;
 import com.example.amattang.domain.commonQuestion.*;
@@ -24,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.example.amattang.exception.ExceptionMessage.NOT_ACCESS_USER;
@@ -50,7 +52,7 @@ public class CommonQuestionService {
     }
 
 
-    public CommonCheckListDto getCheckListQuestionsWithAnswer(User user, Long id, String main, String subCategory, Boolean visibility) {
+    public CommonCheckListDto getCheckListQuestionsWithAnswer(User user, Long id, String main, String subCategory) {
         CheckList checkList = checkListRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(NOT_EXIST_CHECK_LIST));
         isCorrectAuthor(user.getId(), checkList.getUser().getId());
 
@@ -58,26 +60,31 @@ public class CommonQuestionService {
 
         List<CommonQuestionDto> list1 = listCommonQuestion.stream()
                 .filter(w -> !(main.equals(MAIN_CATEGORY.INSIDE.getMsg())) ?
-                        w.getCommonQuestionId().getMainCategory().equals(main) && w.getVisibility().equals(visibility):
-                                w.getCommonQuestionId().getMainCategory().equals(main) && w.getCommonQuestionId().getSubCategory().equals(subCategory) && w.getVisibility().equals(visibility)
+                        w.getCommonQuestionId().getMainCategory().equals(main):
+                                w.getCommonQuestionId().getMainCategory().equals(main) && w.getCommonQuestionId().getSubCategory().equals(subCategory)
                         )
                 .map(x -> (!x.getCommonQuestionId().getAnsType().equals("C") && x.getQuestionToAnswer() == null) ?
-                        mapToDto(x.getCommonQuestionId()) :
-                        mapToDtoWithAnswer(x.getCommonQuestionId(), x.getQuestionToAnswer(), checkList)
+                        mapToDto(x.getCommonQuestionId(), x.isVisibility()) :
+                        mapToDtoWithAnswer(x.getCommonQuestionId(), x.getQuestionToAnswer(), x.isVisibility(), checkList)
                 )
                 .collect(Collectors.toList());
 
         return CommonCheckListDto.create(checkList, list1);
     }
 
-    public CommonQuestionDto mapToDtoWithAnswer(CommonQuestion question, QuestionToAnswer questionToAnswer, CheckList checkList) {
-        List answertDto = mapFromQuestionToTypeAnswer(question, questionToAnswer, checkList);
-        return CommonQuestionDto.fromQuestion(question, answertDto);
+    public CommonQuestionDto mapToDtoWithAnswer(CommonQuestion question, QuestionToAnswer questionToAnswer, boolean visibility, CheckList checkList) {
+        List answerDto = mapFromQuestionToTypeAnswer(question, questionToAnswer, checkList);
+        return CommonQuestionDto.fromQuestion(question, answerDto, visibility);
     }
 
     public CommonQuestionDto mapToDto(CommonQuestion question) {
         List answer = mapFromQuestionToTypeAnswer(question);
         return CommonQuestionDto.fromQuestion(question, answer);
+    }
+
+    public CommonQuestionDto mapToDto(CommonQuestion question, boolean visibility) {
+        List answer = mapFromQuestionToTypeAnswer(question);
+        return CommonQuestionDto.fromQuestion(question, answer, visibility);
     }
 
     public List<? extends Object> mapFromQuestionToTypeAnswer(CommonQuestion question) {
