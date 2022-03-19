@@ -114,7 +114,7 @@ public class CommonQuestionService {
             }
 
             return imageList.stream()
-                    .map(x -> new AnswerCDto(x.getId(), x.getUrl()))
+                    .map(x -> new AnswerCDto(x.getId(), x.getUrl(), x.isMain()))
                     .collect(Collectors.toList());
         } else {
             return AnswerDDto.fromAnswer(entityManager.getReference(CommonQuestionTypeD.class, question.getId()), questionToAnswer.getAnswerList(), questionToAnswer.getId());

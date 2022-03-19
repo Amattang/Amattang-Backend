@@ -21,4 +21,6 @@ public class AnswerCDto {
 
     private String url;
 
+    private boolean main;
+
 }
