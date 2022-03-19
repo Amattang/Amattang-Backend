@@ -61,16 +61,6 @@ public class CustomQuestionService {
         categoryRepository.deleteAllById(categoryIds);
     }
 
-    public void deleteCategoryItems(User user, Long checkListId, Long categoryId, List<Long> questionIds) {
-        CheckList checkList = checkListRepository.findById(checkListId).orElseThrow(() -> new IllegalArgumentException(NOT_EXIST_CHECK_LIST));
-        isCorrectAuthor(user.getId(), checkList.getUser().getId());
-        checkList.getCustomCategories().stream()
-                .filter(x -> x.getId() == categoryId)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(NOT_EXIST_CUSTOM_CATEGORY_WITH_USER));
-        //삭제 로직 만들기
-    }
-
 
     public void isCorrectAuthor(String userId, String authorId) {
         if (!userId.equals(authorId)) {
