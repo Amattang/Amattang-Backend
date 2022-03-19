@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.util.List;
@@ -18,7 +19,6 @@ import java.util.stream.Collectors;
 
 
 @Data
-@AllArgsConstructor
 public class CustomRequestDto {
 
     @NotNull(groups = updateGroup.class, message = "카테고리 아이디가 누락되었습니다.")
@@ -29,13 +29,13 @@ public class CustomRequestDto {
     @NotNull(groups = generalGroup.class, message = "카테고리 이름이 누락되었습니다.")
     @ApiModelProperty(name = "카테고리 이름", example = "집주인한테 물어볼 것들")
     private String categoryName;
-    
+
+    @Valid
     List<QuestionDto> questions;
 
     @Data
     @ApiModel(description = "custom 카테고리의 질문")
-    @AllArgsConstructor
-    class QuestionDto {
+    static class QuestionDto {
 
         @Null(groups = saveGroup.class, message = "질문 생성 시에는 질문 아이디를 입력할 수 없습니다.")
         @ApiModelProperty(name = "카테고리 질문 아이디", example = "원래 날짜보다 앞당겨서 입주가능한가요?")
@@ -59,6 +59,7 @@ public class CustomRequestDto {
 
     }
 
+    //아래 항목이 없을 때를 확인하기
     public CustomCategory toEntity(CheckList checkList) {
         CustomCategory category = CustomCategory.builder()
                 .id(this.id)
