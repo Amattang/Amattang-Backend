@@ -1,8 +1,11 @@
 package com.example.amattang.domain.user;
 
+import com.example.amattang.domain.checkList.CheckList;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @Entity
@@ -27,5 +30,9 @@ public class User {
     public enum ROLE {
         USER
     }
+
+    @OneToMany(mappedBy = "user")
+    private Set<CheckList> checkListSet = new HashSet<>();
+
 
 }

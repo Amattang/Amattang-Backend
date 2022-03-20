@@ -40,7 +40,6 @@ public abstract class CommonQuestion {
     public enum MAIN_CATEGORY {
         OUTSIDE("외부시설"),
         INSIDE("내부시설"),
-        OPTIONS("옵션"),
         BASIC("기본정보");
 
         private String msg;
@@ -55,8 +54,6 @@ public abstract class CommonQuestion {
                     return Optional.of(OUTSIDE);
                 case "내부시설":
                     return Optional.of(INSIDE);
-                case "옵션":
-                    return Optional.of(OPTIONS);
                 case "기본정보":
                     return Optional.of(BASIC);
                 default:
@@ -72,6 +69,8 @@ public abstract class CommonQuestion {
         KITCHEN("부엌"),
         WINDOW("창문"),
         ENTRANCE("현관"),
+        CEILING("천장"),
+        OPTION("옵션"),
         RESTROOM("화장실"),
         NONE("none");
 
@@ -93,6 +92,10 @@ public abstract class CommonQuestion {
                     return Optional.of(ENTRANCE);
                 case "화장실":
                     return Optional.of(RESTROOM);
+                case "옵션":
+                    return Optional.of(OPTION);
+                case "천장":
+                    return Optional.of(CEILING);
                 default:
                     return Optional.ofNullable(null);
             }
