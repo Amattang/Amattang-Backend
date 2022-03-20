@@ -45,12 +45,6 @@ public class AnswerADto {
             list.add(new Answer(q.getTemplate(), false, q.isRedType()));
         }
 
-//        Answer answerTrue = new Answer("예", false, (question.getRedType().equals(REDTYPE.TRUE))? true : false);
-//        Answer answerFalse = new Answer("아니오", false, (question.getRedType().equals(REDTYPE.FALSE))? true : false);
-//        ArrayList arrayList = new ArrayList(Arrays.asList(answerTrue, answerFalse));
-//        return AnswerADto.builder()
-//                .ans(list)
-//                .build();
         return list;
     }
 
@@ -62,10 +56,6 @@ public class AnswerADto {
             list.add(new Answer(a.getType(), ((AnswerBool) a).isAns(), a.isRedType()));
         }
 
-//        return AnswerADto.builder()
-//                .id(id)
-//                .ans(list)
-//                .build();
         return list;
     }
 

@@ -14,8 +14,7 @@ import javax.persistence.Table;
 public class AnswerBool extends Answer{
 
     private boolean ans;
-
-
+    
     public AnswerBool(String type, boolean redType, QuestionToAnswer listToQuestionId, boolean ans) {
         super(type, redType, listToQuestionId);
         this.ans = ans;

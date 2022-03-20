@@ -128,14 +128,14 @@ public class CommonQuestionService {
         isCorrectAuthor(user.getId(), checkList.getUser().getId());
         List<ListToQuestion> listCommonQuestion = checkList.getListCommonQuestion();
         List<Question> question = dto.getQuestion();
-        Collections.sort(question, (a,b) -> a.getId().compareTo(b.getId()));
+        Collections.sort(question, (a,b) -> a.getQuestionId().compareTo(b.getQuestionId()));
         int i = 0;
         for (ListToQuestion q : listCommonQuestion) {
             if (i == question.size()) break;
 
             Question question1 = question.get(i);
 
-            if (q.getCommonQuestionId().getId() == question1.getId()) {
+            if (q.getCommonQuestionId().getId() == question1.getQuestionId()) {
                 q.setVisibility(question1.getVisibility());
                 if (!question1.getVisibility()) {
                     q.deleteAnswer();
