@@ -42,7 +42,7 @@ public class CommonQuestionAnswerService {
             QuestionToAnswer questionToAnswer = new QuestionToAnswer(listToQuestion);
 
             List<AnswerBool> answer = a.getAnswer().stream()
-                    .map(x -> new AnswerBool(x.getType(),x.getRedType(), questionToAnswer,x.getAns()))
+                    .map(x -> new AnswerBool(x.getType(),x.getRedType(), questionToAnswer,x.getVal()))
                     .collect(Collectors.toList());
 
             questionToAnswer.setAnswerBoolList(answer);
@@ -75,7 +75,7 @@ public class CommonQuestionAnswerService {
 
             QuestionToAnswer questionToAnswer = new QuestionToAnswer(listToQuestion);
             List<AnswerBool> answer = d.getAnswer().stream()
-                    .map(x -> new AnswerBool(x.getType(), false, questionToAnswer, x.getAns()))
+                    .map(x -> new AnswerBool(x.getType(), false, questionToAnswer, x.getVal()))
                     .collect(Collectors.toList());
 
             questionToAnswer.setAnswerBoolList(answer);

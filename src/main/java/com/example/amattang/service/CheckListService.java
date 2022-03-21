@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.example.amattang.domain.commonQuestion.CommonQuestion.MAIN_CATEGORY.BASIC;
 import static com.example.amattang.domain.commonQuestion.CommonQuestion.MAIN_CATEGORY.OUTSIDE;
 
 @Slf4j
@@ -44,7 +45,7 @@ public class CheckListService {
         checkList.setListCommonQuestion(relationSet);
         checkListRepository.save(checkList);
         //체크리스트 외부 시설만 뽑아서 반환
-        List<CommonQuestionDto> questionDtos = questionService.getQuestionByCategory(OUTSIDE.getMsg());
+        List<CommonQuestionDto> questionDtos = questionService.getQuestionByCategory(BASIC.getMsg());
         return CommonCheckListDto.create(checkList, questionDtos);
     }
 

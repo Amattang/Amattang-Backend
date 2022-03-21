@@ -1,7 +1,5 @@
 package com.example.amattang.domain.answer.dto;
 
-import com.example.amattang.domain.answer.Answer;
-import com.example.amattang.domain.answer.AnswerBool;
 import com.example.amattang.domain.answer.AnswerString;
 import com.example.amattang.domain.commonQuestion.CommonQuestionTypeB;
 import io.swagger.annotations.ApiModelProperty;
@@ -46,10 +44,6 @@ public class AnswerBDto {
             list.add(new Answer(question.getDirection2()));
         }
 
-//        return AnswerBDto.builder()
-//                .ans(list)
-//                .build();
-
         return list;
     }
 
@@ -57,14 +51,9 @@ public class AnswerBDto {
 
         List<Answer> list = new ArrayList<>();
         for (com.example.amattang.domain.answer.Answer a : answer) {
-            list.add(new Answer(a.getType(), ((AnswerString) a).getAns()));
+            list.add(new Answer(((AnswerString) a).getAns(), a.getType()));
         }
 
-
-//        return AnswerBDto.builder()
-//                .id(id)
-//                .ans(list)
-//                .build();
         return list;
     }
 }

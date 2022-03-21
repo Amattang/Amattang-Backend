@@ -1,8 +1,6 @@
 package com.example.amattang.payload.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,16 +17,16 @@ public class CommonRequestDto {
     @Data
     public static class TypeARequest {
         private Long questionId;
-//        private Long answerId;
         List<ButtonRequest> answer;
 
         @Data
         public static class ButtonRequest {
             private String type;
-            private Boolean ans;
+            private Boolean val;
             private Boolean redType;
         }
     }
+
     @Data
     public static class TypeBRequest {
         private Long questionId;
@@ -49,7 +47,7 @@ public class CommonRequestDto {
         @Data
         public static class Request {
             private String type;
-            private Boolean ans;
+            private Boolean val;
         }
 
     }

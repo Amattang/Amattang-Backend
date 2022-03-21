@@ -43,7 +43,7 @@ public class CustomQuestionService {
         isCorrectAuthor(user.getId(), checkList.getUser().getId());
 
         CustomCategory customCategory = checkList.getCustomCategories().stream()
-                .filter(x -> x.getId() == dto.getId())
+                .filter(x -> x.getId() == dto.getCategoryId())
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 커스텀 카테고리 아이디입니다."));
         dto.updateCategory(customCategory);

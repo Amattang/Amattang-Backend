@@ -92,7 +92,7 @@ public class CommonQuestionController {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
 
         for (Question d : dto.getQuestion()) {
-            if (d.getId() == null) {
+            if (d.getQuestionId() == null) {
                 throw new IllegalArgumentException("삭제(추가)할 질문 아이디가 누락되었습니다.");
             }
             if (d.getVisibility() == null) {
