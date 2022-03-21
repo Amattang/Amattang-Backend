@@ -1,5 +1,6 @@
 package com.example.amattang.service;
 
+import com.example.amattang.domain.answer.AnswerRepository;
 import com.example.amattang.domain.checkList.CheckList;
 import com.example.amattang.domain.checkList.CheckListRepository;
 import com.example.amattang.domain.commonQuestion.CommonQuestion;
@@ -8,15 +9,17 @@ import com.example.amattang.domain.listToQuestion.ListToQuestion;
 import com.example.amattang.domain.user.User;
 import com.example.amattang.payload.reponse.CommonCheckListDto;
 import com.example.amattang.payload.reponse.CommonQuestionDto;
+import com.example.amattang.payload.reponse.MainViewCheckListResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.amattang.domain.commonQuestion.CommonQuestion.MAIN_CATEGORY.BASIC;
-import static com.example.amattang.domain.commonQuestion.CommonQuestion.MAIN_CATEGORY.OUTSIDE;
 
 @Slf4j
 @Service
@@ -27,8 +30,21 @@ public class CheckListService {
     private final CheckListRepository checkListRepository;
     private final CommonQuestionService questionService;
 
+    //체크리스트 반환, 답변이 없는 체크리스트 제외
+    public List<MainViewCheckListResponseDto> getAllCheckListWithAnswer(User user) {
+        List<CheckList> checkLists = user.getCheckLists().stream()
+                .filter(x -> x.isGetAnswer() == true)
+                .collect(Collectors.toList());
+        Collections.sort(checkLists, (a,b) -> (a.getId().compareTo(b.getId())) * (-1));
+        List<MainViewCheckListResponseDto> list = checkLists.stream()
+                .map(x -> MainViewCheckListResponseDto.fromEntity(x))
+                .collect(Collectors.toList());
+        if (list.size() > 0) {
+            list.get(0).setCenter(true);
+        }
+        return list;
+    }
 
-    //체크리스트 생성
     public CommonCheckListDto createCheckList(User user) {
         CheckList checkList = new CheckList(user, false);
         List<CommonQuestion> question = questionRepository.findAll();
@@ -44,15 +60,10 @@ public class CheckListService {
 
         checkList.setListCommonQuestion(relationSet);
         checkListRepository.save(checkList);
-        //체크리스트 외부 시설만 뽑아서 반환
+        //체크리스트 기본정보만
         List<CommonQuestionDto> questionDtos = questionService.getQuestionByCategory(BASIC.getMsg());
         return CommonCheckListDto.create(checkList, questionDtos);
     }
-
-    //체크리스트가 있을 때
-
-
-
 
 
 }

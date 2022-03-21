@@ -1,10 +1,7 @@
 package com.example.amattang.service;
 
 import com.example.amattang.domain.answer.QuestionToAnswer;
-import com.example.amattang.domain.answer.dto.AnswerADto;
-import com.example.amattang.domain.answer.dto.AnswerBDto;
-import com.example.amattang.domain.answer.dto.AnswerCDto;
-import com.example.amattang.domain.answer.dto.AnswerDDto;
+import com.example.amattang.domain.answer.dto.*;
 import com.example.amattang.domain.checkList.CheckList;
 import com.example.amattang.domain.checkList.CheckListRepository;
 import com.example.amattang.domain.commonQuestion.*;
@@ -63,7 +60,7 @@ public class CommonQuestionService {
                         w.getCommonQuestionId().getMainCategory().equals(main):
                                 w.getCommonQuestionId().getMainCategory().equals(main) && w.getCommonQuestionId().getSubCategory().equals(subCategory)
                         )
-                .map(x -> (!x.getCommonQuestionId().getAnsType().equals("C") && x.getQuestionToAnswer() == null) ?
+                .map(x -> (!x.getCommonQuestionId().getAnsType().equals("C") && !x.getCommonQuestionId().getAnsType().equals("M") && x.getQuestionToAnswer() == null) ?
                         mapToDto(x.getCommonQuestionId(), x.isVisibility()) :
                         mapToDtoWithAnswer(x.getCommonQuestionId(), x.getQuestionToAnswer(), x.isVisibility(), checkList)
                 )
@@ -92,9 +89,6 @@ public class CommonQuestionService {
             return AnswerADto.fromQuestion(entityManager.getReference(CommonQuestionTypeA.class, question.getId()));
         } else if (question.getAnsType().equals("B")) {
             return AnswerBDto.fromQuestion(entityManager.getReference(CommonQuestionTypeB.class, question.getId()));
-        } else if (question.getAnsType().equals("C")) {
-            //이미지 타입으로 변경
-            return null;
         } else if (question.getAnsType().equals("D")) {
             return AnswerDDto.fromQuestion(entityManager.getReference(CommonQuestionTypeD.class, question.getId()));
         } else {
@@ -108,16 +102,15 @@ public class CommonQuestionService {
             return AnswerBDto.fromAnswer(entityManager.getReference(CommonQuestionTypeB.class, question.getId()), questionToAnswer.getAnswerList(), questionToAnswer.getId());
         } else if (question.getAnsType().equals("C")) {
             List<Image> imageList = imageRepository.findAllByCheckListId_Id(checkList.getId());
-
-            if (imageList.isEmpty()) {
-                return null;
-            }
+            if (imageList.isEmpty()) return null;
 
             return imageList.stream()
                     .map(x -> new AnswerCDto(x.getId(), x.getUrl(), x.isMain()))
                     .collect(Collectors.toList());
-        } else {
+        } else if (question.getAnsType().equals("D")) {
             return AnswerDDto.fromAnswer(entityManager.getReference(CommonQuestionTypeD.class, question.getId()), questionToAnswer.getAnswerList(), questionToAnswer.getId());
+        } else {
+            return AnswerMDto.fromEntity(checkList.getAddress(), checkList.getLatitude(), checkList.getLongitude());
         }
     }
 

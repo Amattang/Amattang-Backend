@@ -4,8 +4,8 @@ import com.example.amattang.domain.checkList.CheckList;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Entity
@@ -32,7 +32,7 @@ public class User {
     }
 
     @OneToMany(mappedBy = "user")
-    private Set<CheckList> checkListSet = new HashSet<>();
+    private List<CheckList> checkLists = new ArrayList<>();
 
 
 }
