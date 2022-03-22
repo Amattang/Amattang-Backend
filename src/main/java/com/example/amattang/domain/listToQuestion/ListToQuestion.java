@@ -4,6 +4,7 @@ import com.example.amattang.domain.answer.QuestionToAnswer;
 import com.example.amattang.domain.checkList.CheckList;
 import com.example.amattang.domain.commonQuestion.CommonQuestion;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Getter
 @Builder
 @ToString
+@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "check_list_common_question")

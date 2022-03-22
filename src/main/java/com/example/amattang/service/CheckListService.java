@@ -1,6 +1,5 @@
 package com.example.amattang.service;
 
-import com.example.amattang.domain.answer.AnswerRepository;
 import com.example.amattang.domain.checkList.CheckList;
 import com.example.amattang.domain.checkList.CheckListRepository;
 import com.example.amattang.domain.commonQuestion.CommonQuestion;
@@ -10,11 +9,12 @@ import com.example.amattang.domain.user.User;
 import com.example.amattang.payload.reponse.CommonCheckListDto;
 import com.example.amattang.payload.reponse.CommonQuestionDto;
 import com.example.amattang.payload.reponse.MainViewCheckListResponseDto;
+import com.example.amattang.payload.request.MainCheckListRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,6 +45,19 @@ public class CheckListService {
         return list;
     }
 
+    @Transactional
+    public void changeCheckListIsPinned(User user, MainCheckListRequestDto dto) {
+        List<CheckList> checkLists = user.getCheckLists();
+        for (MainCheckListRequestDto.MainRequest r : dto.getCheckList()) {
+            checkLists.stream()
+                    .filter(x -> x.getId() == r.getId())
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("현재 사용자에 존재하지 않는 체크리스트입니다."))
+                    .setPinned(r.getPinned());
+        }
+
+    }
+
     public CommonCheckListDto createCheckList(User user) {
         CheckList checkList = new CheckList(user, false);
         List<CommonQuestion> question = questionRepository.findAll();
@@ -64,6 +77,5 @@ public class CheckListService {
         List<CommonQuestionDto> questionDtos = questionService.getQuestionByCategory(BASIC.getMsg());
         return CommonCheckListDto.create(checkList, questionDtos);
     }
-
 
 }

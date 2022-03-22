@@ -16,6 +16,11 @@ public class ResponseUtil {
         return new ResponseEntity(defaultResponse, HttpStatus.OK);
     }
 
+    public static <T> ResponseEntity<DefaultResponse<T>> succes(String message, HttpStatus httpStatus) {
+        DefaultResponse defaultResponse = new DefaultResponse(httpStatus, message);
+        return new ResponseEntity(defaultResponse, httpStatus);
+    }
+
     public static <T> ResponseEntity<DefaultResponse<T>> succes(HttpStatus httpStatus, T data, String message) {
         DefaultResponse defaultResponse = new DefaultResponse(httpStatus, data, message);
         return new ResponseEntity(defaultResponse, httpStatus);

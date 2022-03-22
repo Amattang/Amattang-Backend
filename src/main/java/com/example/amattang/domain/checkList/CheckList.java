@@ -5,6 +5,7 @@ import com.example.amattang.domain.image.Image;
 import com.example.amattang.domain.listToQuestion.ListToQuestion;
 import com.example.amattang.domain.user.User;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.*;
@@ -12,6 +13,7 @@ import java.util.*;
 @Entity
 @Getter
 @Builder
+@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class CheckList {
@@ -43,7 +45,7 @@ public class CheckList {
     private String area;
     @Setter
     private String floor;
-
+    @Setter
     private boolean pinned;
 
     @Setter
