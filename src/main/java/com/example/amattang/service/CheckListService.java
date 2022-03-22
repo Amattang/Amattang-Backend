@@ -9,7 +9,6 @@ import com.example.amattang.domain.user.User;
 import com.example.amattang.payload.reponse.CommonCheckListDto;
 import com.example.amattang.payload.reponse.CommonQuestionDto;
 import com.example.amattang.payload.reponse.MainViewCheckListResponseDto;
-import com.example.amattang.payload.request.MainCheckListRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,14 +45,18 @@ public class CheckListService {
     }
 
     @Transactional
-    public void changeCheckListIsPinned(User user, MainCheckListRequestDto dto) {
+    public void changeCheckListIsPinned(User user, List<Long> checkListIds) {
         List<CheckList> checkLists = user.getCheckLists();
-        for (MainCheckListRequestDto.MainRequest r : dto.getCheckList()) {
+
+        checkLists.stream()
+                .forEach(x -> x.setPinned(false));
+
+        for (Long id : checkListIds) {
             checkLists.stream()
-                    .filter(x -> x.getId() == r.getId())
+                    .filter(x -> x.getId() == id && x.isGetAnswer())
                     .findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("현재 사용자에 존재하지 않는 체크리스트입니다."))
-                    .setPinned(r.getPinned());
+                    .orElseThrow(() -> new IllegalArgumentException("현재 사용자에 존재하지 않는 체크리스트입니다. id => " + id))
+                    .setPinned(true);
         }
 
     }

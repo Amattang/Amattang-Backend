@@ -5,7 +5,6 @@ import com.example.amattang.domain.user.UserRepository;
 import com.example.amattang.payload.reponse.MainCheckListResponseDto;
 import com.example.amattang.payload.reponse.MainViewCheckListResponseDto;
 import com.example.amattang.payload.reponse.ResponseUtil;
-import com.example.amattang.payload.request.MainCheckListRequestDto;
 import com.example.amattang.security.CurrentUser;
 import com.example.amattang.security.UserPrincipal;
 import com.example.amattang.service.CheckListService;
@@ -47,10 +46,10 @@ public class MainViewController {
     @ApiResponses({
             @ApiResponse(code = 200, message="체크리스트 핀 여부 변경 성공")
     })
-    @PutMapping("/main")
-    public ResponseEntity<?> setCheckListPinned(@CurrentUser UserPrincipal userPrincipal, @RequestBody @Valid MainCheckListRequestDto dto) {
+    @GetMapping("/main")
+    public ResponseEntity<?> setCheckListPinned(@CurrentUser UserPrincipal userPrincipal, @RequestParam("checkListId") List<Long> checkListIds) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
-        checkListService.changeCheckListIsPinned(user, dto);
+        checkListService.changeCheckListIsPinned(user, checkListIds);
         return ResponseUtil.succes(UPDATE_PINNED_CHECK_LIST, HttpStatus.CREATED);
     }
 }
