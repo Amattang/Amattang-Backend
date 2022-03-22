@@ -7,7 +7,7 @@ import com.example.amattang.payload.reponse.MainViewCheckListResponseDto;
 import com.example.amattang.payload.reponse.ResponseUtil;
 import com.example.amattang.security.CurrentUser;
 import com.example.amattang.security.UserPrincipal;
-import com.example.amattang.service.MainViewService;
+import com.example.amattang.service.CheckListService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static com.example.amattang.payload.reponse.ResponseMessage.GET_USER_ALL_CHECK_LIST;
@@ -27,7 +28,7 @@ import static com.example.amattang.payload.reponse.ResponseMessage.GET_USER_ALL_
 @RequestMapping("/api/check-list")
 public class MainViewController {
 
-    private final MainViewService mainViewService;
+    private final CheckListService checkListService;
     private final UserRepository userRepository;
 
     @ApiOperation(value = "1-1.체크리스트 목록(기본정보) 반환", response = MainCheckListResponseDto.class)
@@ -37,8 +38,8 @@ public class MainViewController {
     @GetMapping
     public ResponseEntity<?> getAllCheckList(@CurrentUser UserPrincipal userPrincipal) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
-        MainViewCheckListResponseDto list = mainViewService.getAllCheckListWithAnswer(user);
-        return ResponseUtil.succes(list, GET_USER_ALL_CHECK_LIST);
+        List<MainViewCheckListResponseDto> allCheckList = checkListService.getAllCheckListWithAnswer(user);
+        return ResponseUtil.succes(allCheckList, GET_USER_ALL_CHECK_LIST);
     }
 
     @ApiOperation(value = "1-2.체크리스트 핀 여부 수정", response = MainCheckListResponseDto.class)

@@ -7,17 +7,13 @@ import com.example.amattang.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
 @Builder
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class CheckList {
 
     @Id
@@ -29,7 +25,26 @@ public class CheckList {
     @JoinColumn(name = "user_user_id")
     private User user;
 
-    private Boolean pinned;
+    @Setter
+    private String image;
+    @Setter
+    private String title;
+    @Setter
+    private String address;
+    @Setter
+    private String latitude;
+    @Setter
+    private String longitude;
+    @Setter
+    private String distance;
+    @Setter
+    private String roomType;
+    @Setter
+    private String area;
+    @Setter
+    private String floor;
+
+    private boolean pinned;
 
     @Setter
     @OneToMany(mappedBy = "checkListId", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
@@ -44,5 +59,12 @@ public class CheckList {
     public CheckList(User user, Boolean pinned) {
         this.user = user;
         this.pinned = pinned;
+    }
+
+    public boolean isGetAnswer() {
+        Optional<ListToQuestion> isAnswer = this.listCommonQuestion.stream()
+                .filter(x -> x.getQuestionToAnswer() != null)
+                .findFirst();
+        return isAnswer.isPresent();
     }
 }

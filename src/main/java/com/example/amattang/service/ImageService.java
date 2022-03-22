@@ -58,6 +58,7 @@ public class ImageService {
                 .filter(x -> x.isMain() == true)
                 .forEach(x -> x.deleteMain());
         image.addMain();
+        checkList.setImage(image.getUrl());
     }
 
     public void isCorrectAuthor(String userId, String authorId) {

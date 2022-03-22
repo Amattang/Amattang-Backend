@@ -11,9 +11,12 @@ public class CommonRequestDto {
     private List<TypeARequest> typeA = new ArrayList<>();
     private List<TypeBRequest> typeB = new ArrayList<>();
     private List<TypeDRequest> typeD = new ArrayList<>();
+    private TypeMRequest typeM;
 
     //a-1, a-2
     //c는 이미지 컨트롤러로 받을 것
+
+
     @Data
     public static class TypeARequest {
         private Long questionId;
@@ -49,8 +52,14 @@ public class CommonRequestDto {
             private String type;
             private Boolean val;
         }
-
     }
 
+    @Data
+    public static class TypeMRequest {
+        private Long questionId;
+        private String address;
+        private String latitude;
+        private String longitude;
+    }
 
 }

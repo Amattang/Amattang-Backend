@@ -43,9 +43,6 @@ public class AnswerDDto {
         for (QuestionTemplate q : templates) {
             answer.add(new Answer(q.getTemplate(), false));
         }
-//        return AnswerDDto.builder()
-//                .answer(answer)
-//                .build();
         return answer;
     }
 
@@ -57,11 +54,6 @@ public class AnswerDDto {
             list.add(new Answer(a.getType(), ((AnswerBool) a).isAns()));
         }
 
-//        return AnswerDDto.builder()
-//                .id(id)
-////                .duplication(question.getDuplication())
-//                .answer(list)
-//                .build();
         return list;
     }
 }

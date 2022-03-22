@@ -28,6 +28,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         log.debug("do filter => token authentication filter");
+
         try {
             String accessToken = tokenProvider.getJwtAccessFromHeader(request);
 
