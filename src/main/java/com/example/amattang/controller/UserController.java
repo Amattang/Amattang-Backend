@@ -2,6 +2,7 @@ package com.example.amattang.controller;
 
 import com.example.amattang.payload.reponse.LoginResponseDto;
 import com.example.amattang.payload.reponse.ReIssueTokenResponseDto;
+import com.example.amattang.payload.reponse.ResponseUtil;
 import com.example.amattang.payload.request.LoginRequestDto;
 import com.example.amattang.payload.request.ReIssueTokenRequestDto;
 import com.example.amattang.service.UserService;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import static com.example.amattang.payload.reponse.ResponseUtil.succes;
+import static com.example.amattang.payload.reponse.ResponseUtil.success;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,14 +27,14 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> loginByAccessToken(@RequestBody @Valid LoginRequestDto dto) {
         LoginResponseDto loginResponseDto = userService.loadUser(dto);
-        return succes(loginResponseDto, "로그인 성공");
+        return ResponseUtil.success(loginResponseDto, "로그인 성공");
     }
 
     @ApiOperation(value = "토큰 재발급", response = ReIssueTokenResponseDto.class)
     @PostMapping("/issue/re")
     public ResponseEntity<?> reIssueToken(@RequestBody @Valid ReIssueTokenRequestDto dto) {
         ReIssueTokenResponseDto response = userService.reIssueToken(dto);
-        return succes(response, dto.getRequest() + " 토큰 재발급 성공");
+        return ResponseUtil.success(response, dto.getRequest() + " 토큰 재발급 성공");
     }
 
 

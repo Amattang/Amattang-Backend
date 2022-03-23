@@ -11,17 +11,17 @@ import org.springframework.stereotype.Component;
 @Data
 public class ResponseUtil {
 
-    public static <T> ResponseEntity<DefaultResponse<T>> succes(T data, String message) {
+    public static <T> ResponseEntity<DefaultResponse<T>> success(T data, String message) {
         DefaultResponse defaultResponse = new DefaultResponse(HttpStatus.OK, data, message);
         return new ResponseEntity(defaultResponse, HttpStatus.OK);
     }
 
-    public static <T> ResponseEntity<DefaultResponse<T>> succes(String message, HttpStatus httpStatus) {
+    public static <T> ResponseEntity<DefaultResponse<T>> success(String message, HttpStatus httpStatus) {
         DefaultResponse defaultResponse = new DefaultResponse(httpStatus, message);
         return new ResponseEntity(defaultResponse, httpStatus);
     }
 
-    public static <T> ResponseEntity<DefaultResponse<T>> succes(HttpStatus httpStatus, T data, String message) {
+    public static <T> ResponseEntity<DefaultResponse<T>> success(HttpStatus httpStatus, T data, String message) {
         DefaultResponse defaultResponse = new DefaultResponse(httpStatus, data, message);
         return new ResponseEntity(defaultResponse, httpStatus);
     }
