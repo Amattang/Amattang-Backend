@@ -26,12 +26,16 @@ public class LoggingAspect {
         UrlPathHelper urlPathHelper = new UrlPathHelper();
         log.debug("\n api request\n");
         log.debug("\n request origin uri => " + urlPathHelper.getOriginatingRequestUri(request) + "\n");
-        request.getHeader("Authorization");
-        String token = tokenProvider.getJwtAccessFromHeader(request);
-        String userId = tokenProvider.getUserIdFromToken(token);
 
-        log.debug("\n user token => "+token+ " \n");
-        log.debug("\n user name => "+userId+ "\n");
+        String authorization = request.getHeader("Authorization");
+        if (authorization != null) {
+            String token = tokenProvider.getJwtAccessFromHeader(request);
+            String userId = tokenProvider.getUserIdFromToken(token);
+
+            log.debug("\n user name => "+userId+ "\n");
+        } else {
+            log.debug("\n token not found \n");
+        }
 
     }
 }

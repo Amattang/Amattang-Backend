@@ -58,8 +58,9 @@ public class CommonQuestionController {
             @ApiImplicitParam(name="subCategory", value = "체크리스트의 2차 카테고리", paramType = "param")
     })
     @GetMapping("/{checkListId}/common")
-    public ResponseEntity<?> getCommonQuestionListByCategory(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") Long checkListId, @RequestParam("mainCategory") String mainCategory, @RequestParam(value = "subCategory", required = false) String subCategory) {
-        User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
+    public ResponseEntity<?> getCommonQuestionListByCategory(@PathVariable("checkListId") Long checkListId,
+                                                             @RequestParam("mainCategory") String mainCategory,
+                                                             @RequestParam(value = "subCategory", required = false) String subCategory) {
         MAIN_CATEGORY main = MAIN_CATEGORY.fromMsg(mainCategory).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 메인 카테고리입니다."));
         if (main.equals(MAIN_CATEGORY.INSIDE) && subCategory == null) {
             throw new IllegalArgumentException("서브 카테고리를 입력해주세요");
@@ -68,7 +69,7 @@ public class CommonQuestionController {
         if (subCategory != null) {
             sub = SUB_CATEGORY.fromMsg(subCategory).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 서브 카테고리입니다."));
         }
-        CommonCheckListDto commonCheckListDto = questionService.getCheckListQuestionsWithAnswer(user, checkListId, main.getMsg(), sub.getMsg());
+        CommonCheckListDto commonCheckListDto = questionService.getCheckListQuestionsWithAnswer(checkListId, main.getMsg(), sub.getMsg());
         return ResponseUtil.success(commonCheckListDto, GET_CHECK_LIST_CATEGORY);
     }
 
