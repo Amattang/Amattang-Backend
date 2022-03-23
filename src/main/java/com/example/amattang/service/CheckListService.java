@@ -53,12 +53,12 @@ public class CheckListService {
 
         for (Long id : checkListIds) {
             checkLists.stream()
-                    .filter(x -> x.getId() == id && x.isGetAnswer())
+                    .filter(x -> x.getId().equals(id) && x.isGetAnswer())
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("현재 사용자에 존재하지 않는 체크리스트입니다. id => " + id))
                     .setPinned(true);
-        }
 
+        }
     }
 
     public CommonCheckListDto createCheckList(User user) {

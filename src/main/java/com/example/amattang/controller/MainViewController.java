@@ -8,9 +8,7 @@ import com.example.amattang.payload.reponse.ResponseUtil;
 import com.example.amattang.security.CurrentUser;
 import com.example.amattang.security.UserPrincipal;
 import com.example.amattang.service.CheckListService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +41,9 @@ public class MainViewController {
     }
 
     @ApiOperation(value = "1-2.체크리스트 핀 여부 수정", response = MainCheckListResponseDto.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "checkListId", value = "메인으로 등록할(pinned = true) 체크리스트 아이디 리스트", paramType = "param")
+    })
     @ApiResponses({
             @ApiResponse(code = 200, message="체크리스트 핀 여부 변경 성공")
     })
