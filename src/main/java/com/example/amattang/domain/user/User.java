@@ -32,6 +32,7 @@ public class User {
     }
 
     @OneToMany(mappedBy = "user")
+    @Builder.Default
     private List<CheckList> checkLists = new ArrayList<>();
 
 
