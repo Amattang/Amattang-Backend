@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.example.amattang.domain.commonQuestion.CommonQuestion.MAIN_CATEGORY.BASIC;
@@ -61,7 +62,7 @@ public class CheckListService {
         }
     }
 
-    public CommonCheckListDto createCheckList(User user) {
+    public Map<String, Long> createCheckList(User user) {
         CheckList checkList = new CheckList(user, false);
         List<CommonQuestion> question = questionRepository.findAll();
 
@@ -77,8 +78,9 @@ public class CheckListService {
         checkList.setListCommonQuestion(relationSet);
         checkListRepository.save(checkList);
         //체크리스트 기본정보만
-        List<CommonQuestionDto> questionDtos = questionService.getQuestionByCategory(BASIC.getMsg());
-        return CommonCheckListDto.create(checkList, questionDtos);
+//        List<CommonQuestionDto> questionDtos = questionService.getQuestionByCategory(BASIC.getMsg());
+//        return CommonCheckListDto.create(checkList, questionDtos);
+        return Map.of("checkListId", checkList.getId());
     }
 
 }

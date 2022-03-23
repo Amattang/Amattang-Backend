@@ -38,6 +38,7 @@ public class CustomRequestDto {
 
         @Null(groups = saveGroup.class, message = "질문 생성 시에는 질문 아이디를 입력할 수 없습니다.")
         @ApiModelProperty(name = "카테고리 질문 아이디", example = "1 (post 요청 시에는 입력하지 않음)")
+
         private Long questionId;
 
         @NotNull(groups = generalGroup.class, message = "질문 내용이 누락되었습니다.")
@@ -53,6 +54,15 @@ public class CustomRequestDto {
                     .id(this.questionId)
                     .question(this.content)
                     .checked(this.checked)
+                    .build();
+        }
+
+        public CustomQuestion toEntity(CustomCategory customCategory) {
+            return CustomQuestion.builder()
+                    .id(this.questionId)
+                    .question(this.content)
+                    .checked(this.checked)
+                    .customCategoryId(customCategory)
                     .build();
         }
 
@@ -79,11 +89,9 @@ public class CustomRequestDto {
         category.setName(this.categoryName);
         category.setCustomQuestions(
                 this.questions.stream()
-                        .map(x -> x.toEntity())
+                        .map(x -> x.toEntity(category))
                         .collect(Collectors.toSet())
         );
-        category.getCustomQuestions().stream()
-                .forEach(x -> x.setCustomCategoryId(category));
     }
 
 

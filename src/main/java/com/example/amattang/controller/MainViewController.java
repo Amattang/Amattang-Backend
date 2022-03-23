@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -37,7 +36,7 @@ public class MainViewController {
     public ResponseEntity<?> getAllCheckList(@CurrentUser UserPrincipal userPrincipal) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
         List<MainViewCheckListResponseDto> allCheckList = checkListService.getAllCheckListWithAnswer(user);
-        return ResponseUtil.succes(allCheckList, GET_USER_ALL_CHECK_LIST);
+        return ResponseUtil.success(allCheckList, GET_USER_ALL_CHECK_LIST);
     }
 
     @ApiOperation(value = "1-2.체크리스트 핀 여부 수정", response = MainCheckListResponseDto.class)
@@ -51,6 +50,6 @@ public class MainViewController {
     public ResponseEntity<?> setCheckListPinned(@CurrentUser UserPrincipal userPrincipal, @RequestParam("checkListId") List<Long> checkListIds) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
         checkListService.changeCheckListIsPinned(user, checkListIds);
-        return ResponseUtil.succes(UPDATE_PINNED_CHECK_LIST, HttpStatus.CREATED);
+        return ResponseUtil.success(UPDATE_PINNED_CHECK_LIST, HttpStatus.CREATED);
     }
 }

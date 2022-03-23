@@ -2,6 +2,7 @@ package com.example.amattang.controller;
 
 import com.example.amattang.domain.user.User;
 import com.example.amattang.domain.user.UserRepository;
+import com.example.amattang.payload.reponse.ResponseUtil;
 import com.example.amattang.security.CurrentUser;
 import com.example.amattang.security.UserPrincipal;
 import com.example.amattang.service.ImageService;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static com.example.amattang.payload.reponse.ResponseMessage.*;
-import static com.example.amattang.payload.reponse.ResponseUtil.succes;
+import static com.example.amattang.payload.reponse.ResponseUtil.success;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -38,7 +39,7 @@ public class ImageController {
     public ResponseEntity<?> saveImage(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") Long checkListId, @ModelAttribute List<MultipartFile> image) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
         imageService.saveImage(user, checkListId, image);
-        return succes(CREATED, CREATE_CHECK_LIST_IMAGE);
+        return ResponseUtil.success(CREATED, CREATE_CHECK_LIST_IMAGE);
     }
 
     @ApiOperation(value = "4-2. 체크리스트의 메인 이미지 등록")
@@ -50,7 +51,7 @@ public class ImageController {
     public ResponseEntity<?> getImage(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") Long checkListId, @PathVariable("imageId") Long imageId) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
         imageService.changeMainImage(user, checkListId, imageId);
-        return succes(CREATED, UPDATE_CHECK_LIST_MAIN_IMAGE);
+        return ResponseUtil.success(CREATED, UPDATE_CHECK_LIST_MAIN_IMAGE);
     }
 
     @ApiOperation(value = "4-3. 체크리스트의 이미지 삭제")
@@ -62,6 +63,6 @@ public class ImageController {
     public ResponseEntity<?> deleteImage(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") Long checkListId, @RequestParam("imageId") List<Long> imageIds) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
         imageService.deleteImage(user, checkListId, imageIds);
-        return succes(OK, DELETE_CHECK_LIST_IMAGE);
+        return ResponseUtil.success(OK, DELETE_CHECK_LIST_IMAGE);
     }
 }

@@ -1,6 +1,5 @@
 package com.example.amattang.controller;
 
-import com.example.amattang.domain.commonQuestion.CommonQuestion;
 import com.example.amattang.domain.commonQuestion.CommonQuestion.MAIN_CATEGORY;
 import com.example.amattang.domain.commonQuestion.CommonQuestion.SUB_CATEGORY;
 import com.example.amattang.domain.user.User;
@@ -24,10 +23,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import static com.example.amattang.payload.reponse.ResponseMessage.*;
-import static com.example.amattang.payload.reponse.ResponseUtil.succes;
+import static com.example.amattang.payload.reponse.ResponseUtil.success;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
@@ -46,8 +46,8 @@ public class CommonQuestionController {
     @GetMapping("/init")
     public ResponseEntity<?> createCheckList(@CurrentUser UserPrincipal userPrincipal) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
-        CommonCheckListDto checkList = checkListService.createCheckList(user);
-        return succes(checkList, CREATE_CHECK_LIST);
+        Map<String, Long> checkList = checkListService.createCheckList(user);
+        return success(CREATED, checkList, CREATE_CHECK_LIST);
     }
 
     //리스트가 있는 경우
@@ -69,7 +69,7 @@ public class CommonQuestionController {
             sub = SUB_CATEGORY.fromMsg(subCategory).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 서브 카테고리입니다."));
         }
         CommonCheckListDto commonCheckListDto = questionService.getCheckListQuestionsWithAnswer(user, checkListId, main.getMsg(), sub.getMsg());
-        return succes(commonCheckListDto, GET_CHECK_LIST_CATEGORY);
+        return ResponseUtil.success(commonCheckListDto, GET_CHECK_LIST_CATEGORY);
     }
 
     @ApiOperation(value = "2-3. 답변 등록하기", notes = "타입을 어떻게 나눠서 요청받을 수 있을까")
@@ -80,7 +80,7 @@ public class CommonQuestionController {
     public ResponseEntity<?> saveAnswerToCommonQuestion(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") Long checkListId, @RequestBody @Valid CommonRequestDto dto) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
         answerService.updateAnswer(user, checkListId, dto);
-        return succes(CREATED, UPDATE_CHECK_LIST_ANSWER);
+        return ResponseUtil.success(CREATED, UPDATE_CHECK_LIST_ANSWER);
     }
 
     @ApiOperation(value = "2-4.삭제했던 질문 다시 추가하기 / 질문 삭제하기 (질문 상태 변경)", response = ResponseUtil.class)
@@ -101,7 +101,7 @@ public class CommonQuestionController {
         }
 
         questionService.updateCommonQuestionStatus(user, checkListId, dto);
-        return succes(CREATED, UPDATE_CHECK_LIST_QUESTION_STATUS);
+        return ResponseUtil.success(CREATED, UPDATE_CHECK_LIST_QUESTION_STATUS);
     }
 
 }
