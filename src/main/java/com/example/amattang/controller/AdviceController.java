@@ -1,6 +1,7 @@
 package com.example.amattang.controller;
 
 import com.example.amattang.exception.BadRequestException;
+import com.example.amattang.exception.NotAccessUserException;
 import com.example.amattang.payload.reponse.ResponseUtil.DefaultResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,8 @@ public class AdviceController {
         return fail(HttpStatus.BAD_REQUEST, result.getFieldError().getDefaultMessage());
     }
 
-    @ExceptionHandler(value = {IllegalArgumentException.class, MissingServletRequestParameterException.class, HttpRequestMethodNotSupportedException.class})
+    @ExceptionHandler(value = {IllegalArgumentException.class, MissingServletRequestParameterException.class,
+            HttpRequestMethodNotSupportedException.class, NotAccessUserException.class, NullPointerException.class})
     public ResponseEntity<DefaultResponse> IllegalArgumentHandler(Exception e) {
         return fail(HttpStatus.BAD_REQUEST, e.getMessage());
     }

@@ -81,7 +81,7 @@ public class CommonQuestionController {
     public ResponseEntity<?> saveAnswerToCommonQuestion(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") Long checkListId, @RequestBody @Valid CommonRequestDto dto) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
         answerService.updateAnswer(user, checkListId, dto);
-        return ResponseUtil.success(CREATED, UPDATE_CHECK_LIST_ANSWER);
+        return ResponseUtil.success(UPDATE_CHECK_LIST_ANSWER, CREATED);
     }
 
     @ApiOperation(value = "2-4.삭제했던 질문 다시 추가하기 / 질문 삭제하기 (질문 상태 변경)", response = ResponseUtil.class)
@@ -102,7 +102,7 @@ public class CommonQuestionController {
         }
 
         questionService.updateCommonQuestionStatus(user, checkListId, dto);
-        return ResponseUtil.success(CREATED, UPDATE_CHECK_LIST_QUESTION_STATUS);
+        return ResponseUtil.success(UPDATE_CHECK_LIST_QUESTION_STATUS, CREATED);
     }
 
 }
