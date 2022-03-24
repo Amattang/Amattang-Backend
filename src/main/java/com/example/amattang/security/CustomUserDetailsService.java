@@ -3,6 +3,7 @@ package com.example.amattang.security;
 import com.example.amattang.domain.user.User;
 import com.example.amattang.domain.user.User.PROVIDER;
 import com.example.amattang.domain.user.UserRepository;
+import com.example.amattang.exception.BadRequestException;
 import com.example.amattang.payload.reponse.KakaoUserInfoReponseDto;
 import com.example.amattang.restTemplate.KakaoRestTemplate;
 import lombok.RequiredArgsConstructor;
@@ -39,16 +40,20 @@ public class CustomUserDetailsService implements UserDetailsService {
     public User registerNewUser(String accessToken, String provider) {
         provider = provider.toUpperCase();
         if (provider.equals(PROVIDER.KAKAO.name())) {
-            Optional<KakaoUserInfoReponseDto> kakaoUserNickName = kakaoRestTemplate.getKakaoUserNickName(accessToken);
-            if (kakaoUserNickName.isEmpty()) throw new IllegalArgumentException("유효하지 않은 카카오 액세스 토큰입니다.");
-            KakaoUserInfoReponseDto userInfo = kakaoUserNickName.get();
-            User user = User.builder()
-                    .id(provider + "_" + userInfo.getId())
-                    .provider(PROVIDER.KAKAO)
-                    .name(userInfo.getProperties().get("nickname"))
-                    .build();
-            UserPrincipal.create(user);
-            return userRepository.save(user);
+            Optional<KakaoUserInfoReponseDto> kakaoInfo = kakaoRestTemplate.getKakaoUserNickName(accessToken);
+            if (kakaoInfo.isEmpty()) throw new IllegalArgumentException("유효하지 않은 카카오 액세스 토큰입니다.");
+            KakaoUserInfoReponseDto userInfo = kakaoInfo.get();
+            try {
+                User user = User.builder()
+                        .id(provider + "_" + userInfo.getId())
+                        .provider(PROVIDER.KAKAO)
+                        .name(userInfo.getProperties().get("nickname"))
+                        .build();
+                UserPrincipal.create(user);
+                return userRepository.save(user);
+            } catch (NullPointerException e) {
+                throw new NullPointerException("카카오 애플리케이션에서 닉네임을 받아 올 수 없습니다.");
+            }
         } else if (provider.equals(PROVIDER.APPLE.name())) {
 
         }

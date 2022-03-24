@@ -37,6 +37,7 @@ public class CommonQuestionAnswerService {
 
     @Transactional
     public void updateAnswer(User user, Long checkListId, CommonRequestDto dto) {
+
         CheckList checkList = checkListRepository.findById(checkListId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 체크리스트입니다."));
         isCorrectAuthor(user.getId(), checkList.getUser().getId());
 
