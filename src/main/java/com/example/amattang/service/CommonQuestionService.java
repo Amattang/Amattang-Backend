@@ -4,8 +4,11 @@ import com.example.amattang.domain.answer.QuestionToAnswer;
 import com.example.amattang.domain.answer.dto.*;
 import com.example.amattang.domain.checkList.CheckList;
 import com.example.amattang.domain.checkList.CheckListRepository;
-import com.example.amattang.domain.commonQuestion.*;
+import com.example.amattang.domain.commonQuestion.CommonQuestion;
 import com.example.amattang.domain.commonQuestion.CommonQuestion.MAIN_CATEGORY;
+import com.example.amattang.domain.commonQuestion.CommonQuestionTypeA;
+import com.example.amattang.domain.commonQuestion.CommonQuestionTypeB;
+import com.example.amattang.domain.commonQuestion.CommonQuestionTypeD;
 import com.example.amattang.domain.image.Image;
 import com.example.amattang.domain.image.ImageRepository;
 import com.example.amattang.domain.listToQuestion.ListToQuestion;
@@ -17,7 +20,6 @@ import com.example.amattang.payload.request.CommonVisibilityRequestDto;
 import com.example.amattang.payload.request.CommonVisibilityRequestDto.Question;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,14 +36,12 @@ import static com.example.amattang.exception.ExceptionMessage.NOT_EXIST_CHECK_LI
 @RequiredArgsConstructor
 public class CommonQuestionService {
 
-    private final CommonQuestionRepository questionRepository;
     private final CheckListRepository checkListRepository;
     private final EntityManager entityManager;
     private final ImageRepository imageRepository;
 
-    public CommonCheckListDto getCheckListQuestionsWithAnswer(User user, Long id, String main, String subCategory) {
+    public CommonCheckListDto getCheckListQuestionsWithAnswer(Long id, String main, String subCategory) {
         CheckList checkList = checkListRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(NOT_EXIST_CHECK_LIST));
-        isCorrectAuthor(user.getId(), checkList.getUser().getId());
 
         List<ListToQuestion> listCommonQuestion = checkList.getListCommonQuestion();
 

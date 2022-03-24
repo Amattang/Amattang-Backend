@@ -1,10 +1,12 @@
 package com.example.amattang.configuration;
 
-import com.example.amattang.domain.user.User;
-import com.example.amattang.security.*;
+import com.example.amattang.security.CustomLogoutHandler;
+import com.example.amattang.security.RestAuthenticationEntryPoint;
+import com.example.amattang.security.TokenAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -81,6 +83,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 )
                 .permitAll()
                 .antMatchers("/login","/issue/re", "/api/any")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/check-list/{checkListId:[\\d+]}/**")
                 .permitAll()
                 .antMatchers("/api/check-list/**", "/api/role")
                 .hasRole(USER.name())
