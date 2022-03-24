@@ -9,6 +9,7 @@ import com.example.amattang.domain.customQuestion.CustomQuestion;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -17,7 +18,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+@Slf4j
 @Data
+@Builder
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomRequestDto {
 
     @NotNull(groups = updateGroup.class, message = "카테고리 아이디가 누락되었습니다.")
@@ -33,12 +38,14 @@ public class CustomRequestDto {
     List<QuestionDto> questions;
 
     @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     @ApiModel(description = "custom 카테고리의 질문")
-    static class QuestionDto {
+    public static class QuestionDto {
 
         @Null(groups = saveGroup.class, message = "질문 생성 시에는 질문 아이디를 입력할 수 없습니다.")
         @ApiModelProperty(name = "카테고리 질문 아이디", example = "1 (post 요청 시에는 입력하지 않음)")
-
         private Long questionId;
 
         @NotNull(groups = generalGroup.class, message = "질문 내용이 누락되었습니다.")
@@ -51,18 +58,16 @@ public class CustomRequestDto {
 
         public CustomQuestion toEntity() {
             return CustomQuestion.builder()
-                    .id(this.questionId)
                     .question(this.content)
                     .checked(this.checked)
                     .build();
         }
 
-        public CustomQuestion toEntity(CustomCategory customCategory) {
+        public CustomQuestion toEntity(CustomCategory category) {
             return CustomQuestion.builder()
-                    .id(this.questionId)
                     .question(this.content)
                     .checked(this.checked)
-                    .customCategoryId(customCategory)
+                    .customCategoryId(category)
                     .build();
         }
 
@@ -85,14 +90,6 @@ public class CustomRequestDto {
         return category;
     }
 
-    public void updateCategory(CustomCategory category) {
-        category.setName(this.categoryName);
-        category.setCustomQuestions(
-                this.questions.stream()
-                        .map(x -> x.toEntity(category))
-                        .collect(Collectors.toSet())
-        );
-    }
 
 
 }

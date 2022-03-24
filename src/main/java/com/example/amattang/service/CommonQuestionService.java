@@ -39,16 +39,6 @@ public class CommonQuestionService {
     private final EntityManager entityManager;
     private final ImageRepository imageRepository;
 
-    public List<CommonQuestionDto> getQuestionByCategory(String mainCategory) {
-        List<CommonQuestion> questionList = questionRepository.findByMainCategory(mainCategory, Sort.by(Sort.Direction.ASC, "id"));
-        List<CommonQuestionDto> checkListDtoList = questionList.stream()
-                .filter(x -> x.getMainCategory().equals(mainCategory))
-                .map(x -> mapToDto(x))
-                .collect(Collectors.toList());
-        return checkListDtoList;
-    }
-
-
     public CommonCheckListDto getCheckListQuestionsWithAnswer(User user, Long id, String main, String subCategory) {
         CheckList checkList = checkListRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(NOT_EXIST_CHECK_LIST));
         isCorrectAuthor(user.getId(), checkList.getUser().getId());
@@ -72,11 +62,6 @@ public class CommonQuestionService {
     public CommonQuestionDto mapToDtoWithAnswer(CommonQuestion question, QuestionToAnswer questionToAnswer, boolean visibility, CheckList checkList) {
         List answerDto = mapFromQuestionToTypeAnswer(question, questionToAnswer, checkList);
         return CommonQuestionDto.fromQuestion(question, answerDto, visibility);
-    }
-
-    public CommonQuestionDto mapToDto(CommonQuestion question) {
-        List answer = mapFromQuestionToTypeAnswer(question);
-        return CommonQuestionDto.fromQuestion(question, answer);
     }
 
     public CommonQuestionDto mapToDto(CommonQuestion question, boolean visibility) {

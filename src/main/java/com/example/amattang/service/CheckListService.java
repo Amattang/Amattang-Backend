@@ -28,7 +28,6 @@ public class CheckListService {
 
     private final CommonQuestionRepository questionRepository;
     private final CheckListRepository checkListRepository;
-    private final CommonQuestionService questionService;
 
     //체크리스트 반환, 답변이 없는 체크리스트 제외
     public List<MainViewCheckListResponseDto> getAllCheckListWithAnswer(User user) {
@@ -77,9 +76,6 @@ public class CheckListService {
 
         checkList.setListCommonQuestion(relationSet);
         checkListRepository.save(checkList);
-        //체크리스트 기본정보만
-//        List<CommonQuestionDto> questionDtos = questionService.getQuestionByCategory(BASIC.getMsg());
-//        return CommonCheckListDto.create(checkList, questionDtos);
         return Map.of("checkListId", checkList.getId());
     }
 

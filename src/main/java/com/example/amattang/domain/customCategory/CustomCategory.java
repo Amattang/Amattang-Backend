@@ -31,6 +31,8 @@ public class CustomCategory {
     private CheckList checkListId;
 
     @Setter
+    @Builder.Default
     @OneToMany(mappedBy = "customCategoryId", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     Set<CustomQuestion> customQuestions = new HashSet<>();
+
 }
