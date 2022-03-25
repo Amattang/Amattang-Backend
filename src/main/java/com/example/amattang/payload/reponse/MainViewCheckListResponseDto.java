@@ -17,7 +17,7 @@ public class MainViewCheckListResponseDto {
     private String imgUri;
     private String mainTitle;
     private String address;
-    private Map<String, String> location;
+    private Map<String, Double> location;
     private String distance;
     private String roomType;
     private String area;

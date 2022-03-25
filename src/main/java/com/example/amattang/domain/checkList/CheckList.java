@@ -34,9 +34,9 @@ public class CheckList {
     @Setter
     private String address;
     @Setter
-    private String latitude;
+    private Double latitude;
     @Setter
-    private String longitude;
+    private Double longitude;
     @Setter
     private String distance;
     @Setter

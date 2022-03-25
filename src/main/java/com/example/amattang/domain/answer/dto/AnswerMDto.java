@@ -16,9 +16,9 @@ import java.util.Map;
 public class AnswerMDto {
 
     private String address;
-    private Map<String, String> latlng;
+    private Map<String, Double> location;
 
-    public static List<AnswerMDto> fromEntity(String address, String lat, String lon) {
+    public static List<AnswerMDto> fromEntity(String address, Double lat, Double lon) {
         return Arrays.asList(
                 new AnswerMDto(
                     address,
