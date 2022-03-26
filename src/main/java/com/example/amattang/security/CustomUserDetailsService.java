@@ -3,7 +3,6 @@ package com.example.amattang.security;
 import com.example.amattang.domain.user.User;
 import com.example.amattang.domain.user.User.PROVIDER;
 import com.example.amattang.domain.user.UserRepository;
-import com.example.amattang.exception.BadRequestException;
 import com.example.amattang.payload.reponse.KakaoUserInfoReponseDto;
 import com.example.amattang.restTemplate.KakaoRestTemplate;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return UserPrincipal.create(user);
     }
 
-    public User registerNewUser(String accessToken, String provider) {
+    public User registerNewKakaoUser(String accessToken, String provider) {
         provider = provider.toUpperCase();
         if (provider.equals(PROVIDER.KAKAO.name())) {
             Optional<KakaoUserInfoReponseDto> kakaoInfo = kakaoRestTemplate.getKakaoUserNickName(accessToken);
@@ -54,11 +53,18 @@ public class CustomUserDetailsService implements UserDetailsService {
             } catch (NullPointerException e) {
                 throw new NullPointerException("카카오 애플리케이션에서 닉네임을 받아 올 수 없습니다.");
             }
-        } else if (provider.equals(PROVIDER.APPLE.name())) {
-
         }
         throw new IllegalArgumentException("로그인을 지원하지 않는 인증 기관입니다. => " + provider);
     }
 
+    public User registerNewAppleUser(String userId, String email) {
+        User user = User.builder()
+                .id("APPLE_" + userId)
+                .provider(PROVIDER.APPLE)
+                .name(email)
+                .build();
+        UserPrincipal.create(user);
+        return userRepository.save(user);
+    }
 
 }

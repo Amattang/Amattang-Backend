@@ -2,12 +2,14 @@ package com.example.amattang.payload.reponse;
 
 import com.example.amattang.domain.user.User;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.Date;
+import java.util.Locale;
 
 @Getter
+@Setter(AccessLevel.PRIVATE)
+@Builder
 @AllArgsConstructor
 public class LoginResponseDto {
 
@@ -18,6 +20,8 @@ public class LoginResponseDto {
     private String id;
     @ApiModelProperty(name = "사용자 이름/닉네임", example = "jaeri")
     private String name;
+    @ApiModelProperty(name = "사용자 메일", example = "jaeri@gmail.com")
+    private String email;
     @ApiModelProperty(name = "인증 기관", example = "kakao")
     private String provider;
     @ApiModelProperty(name = "access token")
@@ -33,15 +37,21 @@ public class LoginResponseDto {
 
     public static LoginResponseDto create(User user, String access, String refresh, Date date) {
         Date now = new Date();
-        return new LoginResponseDto(
-                user.getId(),
-                user.getName(),
-                user.getProvider().name().toLowerCase(),
-                access,
-                14400000L - (now.getTime() - date.getTime()),
-                refresh,
-                2592000000L - (now.getTime() - date.getTime())
-        );
+        LoginResponseDto res = LoginResponseDto.builder()
+                .id(user.getId())
+                .provider(user.getProvider().name().toLowerCase())
+                .accessToken(access)
+                .accessExpiresIn(14400000L - (now.getTime() - date.getTime()))
+                .refreshToken(refresh)
+                .refreshExpiresIn(2592000000L - (now.getTime() - date.getTime()))
+                .build();
+        if (user.getProvider().equals(User.PROVIDER.KAKAO)) {
+            res.setName(user.getName());
+        } else {
+            res.setEmail(user.getName());
+        }
+
+        return res;
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.amattang.service;
 import com.example.amattang.domain.user.User;
 import com.example.amattang.payload.reponse.LoginResponseDto;
 import com.example.amattang.payload.reponse.ReIssueTokenResponseDto;
+import com.example.amattang.payload.request.AppleLoginRequestDto;
 import com.example.amattang.payload.request.LoginRequestDto;
 import com.example.amattang.payload.request.ReIssueTokenRequestDto;
 import com.example.amattang.template.RedisCustomTemplate;
@@ -31,7 +32,16 @@ public class UserService {
     private final RedisTemplate redisTemplate;
 
     public LoginResponseDto loadUser(LoginRequestDto dto) {
-        User user = userDetailsService.registerNewUser(dto.getAccessToken(), dto.getProvider());
+        User user = userDetailsService.registerNewKakaoUser(dto.getAccessToken(), dto.getProvider());
+        return makeTokenWithUser(user);
+    }
+
+    public LoginResponseDto loadUser(AppleLoginRequestDto dto) {
+        User user = userDetailsService.registerNewAppleUser(dto.getUser(), dto.getEmail());
+        return makeTokenWithUser(user);
+    }
+
+    public LoginResponseDto makeTokenWithUser(User user) {
         Date date = new Date();
         String accessToken = tokenProvider.createJwtToken(user.getId(),date, ACCESS);
         String refreshToken = tokenProvider.createJwtToken(user.getId(),date, REFRESH);
