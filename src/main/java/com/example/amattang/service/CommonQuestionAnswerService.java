@@ -22,10 +22,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.amattang.exception.ExceptionMessage.NOT_ACCESS_USER;
+import static com.example.amattang.exception.ExceptionMessage.OVERLAP_QUESTION_ID;
 
 @Slf4j
 @Service
@@ -57,6 +60,15 @@ public class CommonQuestionAnswerService {
     }
 
     public void saveAnswerTypeA(List<TypeARequest> list, CheckList checkList) {
+
+        Collections.sort(list, new Comparator<TypeARequest>() {
+            @Override
+            public int compare(TypeARequest o1, TypeARequest o2) {
+                int compare = o1.getQuestionId().compareTo(o2.getQuestionId());
+                if (compare == 0) throw new IllegalArgumentException(OVERLAP_QUESTION_ID + o1.getQuestionId());
+                return compare;
+            }
+        });
         for (TypeARequest a : list) {
 
             ListToQuestion listToQuestion = initAnswer(checkList.getId(), a.getQuestionId());
@@ -77,6 +89,16 @@ public class CommonQuestionAnswerService {
     }
 
     public void saveAnswerTypeB(List<TypeBRequest> list, CheckList checkList) {
+
+        Collections.sort(list, new Comparator<TypeBRequest>() {
+            @Override
+            public int compare(TypeBRequest o1, TypeBRequest o2) {
+                int compare = o1.getQuestionId().compareTo(o2.getQuestionId());
+                if (compare == 0) throw new IllegalArgumentException(OVERLAP_QUESTION_ID  + o1.getQuestionId());
+                return compare;
+            }
+        });
+
         for (TypeBRequest b : list) {
 
             ListToQuestion listToQuestion = initAnswer(checkList.getId(), b.getQuestionId());
@@ -95,6 +117,16 @@ public class CommonQuestionAnswerService {
         }
     }
     public void saveAnswerTypeD(List<TypeDRequest> list, CheckList checkList) {
+
+        Collections.sort(list, new Comparator<TypeDRequest>() {
+            @Override
+            public int compare(TypeDRequest o1, TypeDRequest o2) {
+                int compare = o1.getQuestionId().compareTo(o2.getQuestionId());
+                if (compare == 0) throw new IllegalArgumentException(OVERLAP_QUESTION_ID + o1.getQuestionId());
+                return compare;
+            }
+        });
+
         for (TypeDRequest d : list) {
 
             ListToQuestion listToQuestion = initAnswer(checkList.getId(), d.getQuestionId());

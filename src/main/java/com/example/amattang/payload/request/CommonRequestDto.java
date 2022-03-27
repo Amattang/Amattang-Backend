@@ -58,8 +58,8 @@ public class CommonRequestDto {
     public static class TypeMRequest {
         private Long questionId;
         private String address;
-        private String latitude;
-        private String longitude;
+        private Double latitude;
+        private Double longitude;
     }
 
 }
