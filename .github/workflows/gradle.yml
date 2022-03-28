@@ -61,8 +61,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           aws deploy create-deployment \
-          --application-name amattang-server \
-          --deployment-group-name DeployGroup \
+          --application-name Amattang-deploy \
+          --deployment-group-name Github-Actions-Group \
           --file-exists-behavior OVERWRITE \
           --s3-location bucket=amattang-bucket,bundleType=zip,key=build.zip \
           --region ap-northeast-2
