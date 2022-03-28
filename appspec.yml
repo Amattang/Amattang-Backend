@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/build/ # 배포 파일 도착 폴더
+    destination: /home/ubuntu/deploy # 배포 파일 도착 폴더
     overwrite: yes 
 permissions:
   - object: /
