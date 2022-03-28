@@ -36,8 +36,6 @@ out/
 ### user setting ###
 *.yml
 src/main/resources
-gradle/
-*.bat
 .gradle/
 .gradle
 **/dataSet/**
