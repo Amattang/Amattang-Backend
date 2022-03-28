@@ -37,7 +37,6 @@ out/
 *.yml
 src/main/resources
 gradle/
-gradlew
 *.bat
 .gradle/
 .gradle
