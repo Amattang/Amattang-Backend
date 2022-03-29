@@ -1,0 +1,6 @@
+app:
+  token:
+    issuer: ${env.JWT_ISSUER}
+    secret: ${env.JWT_SECRET}
+    accessTokenExpirationSec: ${env.JWT_ACCESS_EXPIRATION}
+    refreshTokenExpirationSec: ${env.JWT_REFRESH_EXPIRATION}

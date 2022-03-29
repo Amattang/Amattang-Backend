@@ -1,0 +1,11 @@
+cloud:
+  aws:
+    credentials:
+      accessKey: ${env.S3_ACCESS}
+      secretKey: ${env.S3_SECRET}
+    s3:
+      bucket: ${env.S3_BUCKET}
+    region:
+      static: ${env.S3_REGION}
+    stack:
+      auto: ${env.S3_STACK_AUTO}
