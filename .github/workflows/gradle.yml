@@ -28,6 +28,23 @@ jobs:
 
       # Build
       - name: Build with Gradle
+        env:
+          env.DB_URL: ${{secrets.DB_URL}}
+          env.DB_USERNAME: ${{secrets.DB_USERNAME}}
+          env.DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+          env.REDIS_HOST: ${{secrets.REDIS_HOST}}
+          env.REDIS_PORT: ${{secrets.REDIS_PORT}}
+          env.S3_ACCESS: ${{secrets.S3_ACCESS}}
+          env.S3_SECRET: ${{secrets.S3_SECRET}}
+          env.S3_BUCKET: ${{secrets.S3_BUCKET}}
+          env.S3_REGION: ${{secrets.S3_REGION}}
+          env.S3_STACK_AUTO: ${{secrets.S3_STACK_AUTO}}
+          env.JWT_ISSUER: ${{secrets.JWT_ISSUER}}
+          env.JWT_SECRET: ${{secrets.JWT_SECRET}}
+          env.JWT_ACCESS_EXPIRATION: ${{secrets.JWT_ACCESS_EXPIRATION}}
+          env.JWT_REFRESH_EXPIRATION: ${{secrets.JWT_REFRESH_EXPIRATION}}
+          env.MAX_FILE: ${{secrets.MAX_FILE}}
+          env.MAX_REQUEST: ${{secrets.MAX_REQUEST}}
         run: ./gradlew clean build -x test
 
       # 전송할 파일을 담을 디렉토리 생성
