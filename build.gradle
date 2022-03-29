@@ -18,6 +18,10 @@ repositories {
 	mavenCentral()
 }
 
+jar {
+	enabled = false //plain not making
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -48,6 +52,8 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.7'
+
+	implementation 'me.paulschwarz:spring-dotenv:2.5.1'
 
 }
 

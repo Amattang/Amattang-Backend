@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    include: oauth, s3
+    active: prod
+
+  devtools:
+    restart:
+      log-condition-evaluation-delta: false
+
+  servlet:
+    multipart:
+      max-file-size: ${env.MAX_FILE}
+      max-request-size: ${env.MAX_REQUEST}

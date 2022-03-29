@@ -12,10 +12,7 @@ import org.springframework.web.util.UrlPathHelper;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Optional;
 
 @Slf4j
@@ -44,21 +41,6 @@ public class CorsConfig implements WebMvcConfigurer, Filter {
                 log.info("Request User Id => "+userId);
         } else {
             log.info("Token Not Found");
-        }
-
-
-        StringBuilder stringBuilder = new StringBuilder();
-        InputStream inputStream = request.getInputStream();
-        if (inputStream != null) {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            char[] charBuffer = new char[128];
-            int bytesRead = -1;
-            while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
-                stringBuilder.append(charBuffer, 0, bytesRead);
-            }
-            log.debug("Request Body : " + stringBuilder.toString());
-        } else {
-            log.debug("Request Body : Not Found");
         }
 
         response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));

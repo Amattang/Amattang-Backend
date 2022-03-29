@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${env.DB_URL}
+    username: ${env.DB_USERNAME}
+    password: ${env.DB_PASSWORD}
+  redis:
+    host: ${env.REDIS_HOST}
+    port: ${env.REDIS_PORT}
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+logging:
+  file:
+    path: /home/ubuntu/log
+  level:
+    root: info
+    com.example.amattang: debug

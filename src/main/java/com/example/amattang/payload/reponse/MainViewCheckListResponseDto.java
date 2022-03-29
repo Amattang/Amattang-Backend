@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -14,6 +15,7 @@ import java.util.Map;
 public class MainViewCheckListResponseDto {
 
     private Long id;
+    private int order;
     private String imgUri;
     private String mainTitle;
     private String address;
@@ -24,13 +26,21 @@ public class MainViewCheckListResponseDto {
     private String form;
     private boolean pinned;
     private boolean center;
+    private Property information;
 
-    //latlng : latitude, longitude
+    @Data
+    @AllArgsConstructor
+    static class Property {
+        private String distance;
+        private String roomType;
+        private String area;
+        private String form;
+    }
 
-
-    public static MainViewCheckListResponseDto fromEntity(CheckList checkList) {
+    public static MainViewCheckListResponseDto fromEntity(CheckList checkList, int index) {
         return MainViewCheckListResponseDto.builder()
                 .id(checkList.getId())
+                .order(index)
                 .imgUri(checkList.getImage())
                 .mainTitle(checkList.getTitle())
                 .address(checkList.getAddress())
@@ -46,6 +56,14 @@ public class MainViewCheckListResponseDto {
                 .form(checkList.getFloor())
                 .pinned(checkList.isPinned())
                 .center(false)
+                .information(
+                        new Property(
+                                checkList.getDistance(),
+                                checkList.getRoomType(),
+                                checkList.getArea(),
+                                checkList.getFloor()
+                        )
+                )
                 .build();
     }
 }
