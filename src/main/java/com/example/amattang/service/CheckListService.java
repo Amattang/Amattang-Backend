@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.example.amattang.domain.commonQuestion.CommonQuestion.MAIN_CATEGORY.BASIC;
 
@@ -35,9 +36,11 @@ public class CheckListService {
                 .filter(x -> x.isGetAnswer() == true)
                 .collect(Collectors.toList());
         Collections.sort(checkLists, (a,b) -> (a.getId().compareTo(b.getId())) * (-1));
-        List<MainViewCheckListResponseDto> list = checkLists.stream()
-                .map(x -> MainViewCheckListResponseDto.fromEntity(x))
+
+        List<MainViewCheckListResponseDto> list = IntStream.range(0, checkLists.size())
+                .mapToObj(x -> MainViewCheckListResponseDto.fromEntity(checkLists.get(x), x))
                 .collect(Collectors.toList());
+
         if (list.size() > 0) {
             list.get(0).setCenter(true);
         }
