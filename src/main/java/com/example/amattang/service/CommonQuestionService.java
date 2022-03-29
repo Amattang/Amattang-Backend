@@ -27,6 +27,7 @@ import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.example.amattang.exception.ExceptionMessage.NOT_ACCESS_USER;
 import static com.example.amattang.exception.ExceptionMessage.NOT_EXIST_CHECK_LIST;
@@ -89,9 +90,10 @@ public class CommonQuestionService {
             List<Image> imageList = imageRepository.findAllByCheckListId_Id(checkList.getId());
             if (imageList.isEmpty()) return null;
 
-            return imageList.stream()
-                    .map(x -> new AnswerCDto(x.getId(), x.getUrl(), x.isMain()))
+            return IntStream.range(0, imageList.size())
+                    .mapToObj(x -> new AnswerCDto(imageList.get(x).getId(), x, imageList.get(x).getUrl(), imageList.get(x).isMain()))
                     .collect(Collectors.toList());
+
         } else if (question.getAnsType().equals("D")) {
             return AnswerDDto.fromAnswer(entityManager.getReference(CommonQuestionTypeD.class, question.getId()), questionToAnswer.getAnswerList(), questionToAnswer.getId());
         } else {
