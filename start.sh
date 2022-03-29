@@ -3,9 +3,7 @@ BUILD_JAR=$(ls /home/ubuntu/deploy/*.jar)
 JAR_NAME=$(basename $BUILD_JAR)
 echo "> build : $JAR_NAME" >> /home/ubuntu/deploy.log
 
-echo "> build 파일 복사" >> /home/ubuntu/deploy.log
-DEPLOY_PATH=/home/ubuntu/
-cp $BUILD_JAR $DEPLOY_PATH
+DEPLOY_PATH=/home/ubuntu/deploy/
 
 echo "> 현재 실행중인 애플리케이션 pid 확인" >> /home/ubuntu/deploy.log
 CURRENT_PID=$(pgrep -f $JAR_NAME)
