@@ -41,6 +41,31 @@ jobs:
       # appspec.yml Copy
       - name: Copy appspec
         run: cp appspec.yml start.sh ./deploy/
+        
+      # create .env file
+      - name: Create .env file
+        run: |
+          touch .env
+          echo "DB_URL=${{secrets.DB_URL}}" >> .env
+          echo "DB_USERNAME=${{secrets.DB_USERNAME}}" >> .env
+          echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}" >> .env
+          echo "REDIS_HOST=${{secrets.REDIS_HOST}}" >> .env
+          echo "REDIS_PORT=${{secrets.REDIS_PORT}}" >> .env
+          echo "S3_ACCESS=${{secrets.S3_ACCESS}}" >> .env
+          echo "S3_SECRET=${{secrets.S3_SECRET}}" >> .env
+          echo "S3_BUCKET=${{secrets.S3_BUCKET}}" >> .env
+          echo "S3_REGION=${{secrets.S3_REGION}}" >> .env
+          echo "S3_STACK_AUTO=${{secrets.S3_STACK_AUTO}}" >> .env
+          echo "JWT_ISSUER=${{secrets.JWT_ISSUER}}" >> .env
+          echo "JWT_SECRET=${{secrets.JWT_SECRET}}" >> .env
+          echo "JWT_ACCESS_EXPIRATION=${{secrets.JWT_ACCESS_EXPIRATION}}" >> .env
+          echo "JWT_REFRESH_EXPIRATION=${{secrets.JWT_REFRESH_EXPIRATION}}" >> .env
+          echo "MAX_FILE=${{secrets.MAX_FILE}}" >> .env
+          echo "MAX_REQUEST=${{secrets.MAX_REQUEST}}" >> .env
+        
+      # copy .env file
+      - name: copy .env file
+        run: cp .env ./deploy/
 
 
       # 압축파일 형태로 전달
@@ -59,5 +84,4 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run:
-          aws deploy create-deployment --application-name Amattang-deploy --deployment-group-name Github-Actions-Group --file-exists-behavior OVERWRITE --s3-location bucket=amattang-bucket,bundleType=zip,key=server/build.zip --region ap-northeast-2
+        run: aws deploy create-deployment --application-name Amattang-deploy --deployment-group-name Github-Actions-Group --file-exists-behavior OVERWRITE --s3-location bucket=amattang-bucket,bundleType=zip,key=server/build.zip --region ap-northeast-2
