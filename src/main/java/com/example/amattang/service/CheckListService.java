@@ -6,9 +6,11 @@ import com.example.amattang.domain.commonQuestion.CommonQuestion;
 import com.example.amattang.domain.commonQuestion.CommonQuestionRepository;
 import com.example.amattang.domain.listToQuestion.ListToQuestion;
 import com.example.amattang.domain.user.User;
+import com.example.amattang.exception.ExceptionMessage;
 import com.example.amattang.payload.reponse.CommonCheckListDto;
 import com.example.amattang.payload.reponse.CommonQuestionDto;
 import com.example.amattang.payload.reponse.MainViewCheckListResponseDto;
+import com.example.amattang.payload.request.CheckListChangePinRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.example.amattang.domain.commonQuestion.CommonQuestion.MAIN_CATEGORY.BASIC;
+import static com.example.amattang.exception.ExceptionMessage.NOT_EXIST_CHECK_LIST;
 
 @Slf4j
 @Service
@@ -48,20 +51,14 @@ public class CheckListService {
     }
 
     @Transactional
-    public void changeCheckListIsPinned(User user, List<Long> checkListIds) {
+    public void changeCheckListIsPinned(User user, CheckListChangePinRequestDto dto) {
         List<CheckList> checkLists = user.getCheckLists();
 
         checkLists.stream()
-                .forEach(x -> x.setPinned(false));
-
-        for (Long id : checkListIds) {
-            checkLists.stream()
-                    .filter(x -> x.getId().equals(id) && x.isGetAnswer())
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("현재 사용자에 존재하지 않는 체크리스트입니다. id => " + id))
-                    .setPinned(true);
-
-        }
+                .filter(x -> x.getId().equals(dto.getCheckListId()))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException(NOT_EXIST_CHECK_LIST))
+                .setPinned(dto.getPinned());
     }
 
     public Map<String, Long> createCheckList(User user) {
