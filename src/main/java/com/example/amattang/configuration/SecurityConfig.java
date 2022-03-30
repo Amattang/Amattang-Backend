@@ -84,7 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/login","/issue/re", "/api/any")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/check-list/{checkListId:[\\d+]}/**")
+                .antMatchers(HttpMethod.GET, "/api/check-list/{checkListId}/**")
                 .permitAll()
                 .antMatchers("/api/check-list/**", "/api/role")
                 .hasRole(USER.name())
