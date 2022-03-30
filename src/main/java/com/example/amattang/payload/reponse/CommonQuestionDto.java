@@ -35,8 +35,6 @@ public class CommonQuestionDto {
     @ApiModelProperty(name = "질문에 대한 답변", notes = "답변이 없는 경우에도 초기화하여 반환, 각 타입은 아래 model에서 확인, AnswerADto, AnswerBDto, AnswerCDto, AnswerDDto")
     private List answer;
 
-    //문서에 어떻게 적어야 하는지 모르겠다
-
     public static CommonQuestionDtoBuilder fromQuestionBuilder(CommonQuestion question, List answer) {
         return CommonQuestionDto.builder()
                 .questionId(question.getId())
