@@ -26,6 +26,8 @@ public class CommonCheckListDto {
     @ApiModel(value = "체크리스트 메인 기본 정보")
     static class Property {
 
+        private String title;
+        private String address;
         private String distance;
         private String roomType;
         private String area;
@@ -38,6 +40,8 @@ public class CommonCheckListDto {
                 .questionList(question)
                 .information(
                         new Property(
+                                checkList.getTitle(),
+                                checkList.getAddress(),
                                 checkList.getDistance(),
                                 checkList.getRoomType(),
                                 checkList.getArea(),
