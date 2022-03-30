@@ -28,6 +28,7 @@ public class CommonCheckListDto {
 
         private String title;
         private String address;
+        private String imgUri;
         private String distance;
         private String roomType;
         private String area;
@@ -42,6 +43,7 @@ public class CommonCheckListDto {
                         new Property(
                                 checkList.getTitle(),
                                 checkList.getAddress(),
+                                checkList.getImage(),
                                 checkList.getDistance(),
                                 checkList.getRoomType(),
                                 checkList.getArea(),
