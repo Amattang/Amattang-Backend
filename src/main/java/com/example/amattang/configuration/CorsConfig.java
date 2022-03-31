@@ -41,12 +41,6 @@ public class CorsConfig implements WebMvcConfigurer, Filter {
                 URLDecoder.decode(request.getQueryString(), "UTF-8") : " "));
         String contentType = request.getContentType();
         log.info("Request Content Type => " + contentType);
-        if (Optional.ofNullable(contentType).isPresent() && request.getContentType().contains("json")) {
-            RereadableRequestWrapper rereadableRequestWrapper = new RereadableRequestWrapper(request);
-            ServletInputStream inputStream = rereadableRequestWrapper.getInputStream();
-            log.info("Request Body : " + StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8));
-
-        }
 
         if (Optional.ofNullable(request.getHeader("Authorization")).isPresent()) {
             String token = tokenProvider.getJwtAccessFromHeader(request);
