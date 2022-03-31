@@ -11,6 +11,7 @@ import com.example.amattang.payload.request.ReIssueTokenRequestDto;
 import com.example.amattang.security.CurrentUser;
 import com.example.amattang.security.UserPrincipal;
 import com.example.amattang.service.UserService;
+import com.example.amattang.template.RedisCustomTemplate;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ public class UserController {
 
     private final UserService userService;
     private final UserRepository userRepository;
+    private final RedisCustomTemplate redisCustomTemplate;
 
     @ApiOperation(value = "로그인", response = LoginResponseDto.class)
     @PostMapping("/login")
@@ -42,6 +44,7 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@CurrentUser UserPrincipal userPrincipal) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
         userRepository.deleteById(user.getId());
+        redisCustomTemplate.deleteRedisStringValue(user.getId());
         return ResponseUtil.success("회원 탈퇴 성공", HttpStatus.OK);
     }
 
