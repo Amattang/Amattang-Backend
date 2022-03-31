@@ -49,6 +49,7 @@ public class CheckList {
     private boolean pinned;
 
     @Setter
+    @Builder.Default
     @OneToMany(mappedBy = "checkListId", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     List<ListToQuestion> listCommonQuestion = new ArrayList<>();
 
@@ -56,6 +57,7 @@ public class CheckList {
     @OneToMany(mappedBy = "checkListId", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     Set<CustomCategory> customCategories = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "checkListId", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     Set<Image> imageList = new HashSet<>();
 

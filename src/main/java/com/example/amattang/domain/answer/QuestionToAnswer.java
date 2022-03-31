@@ -39,10 +39,6 @@ public class QuestionToAnswer {
                 .forEach(x -> this.answerList.add(x));
     }
 
-    public void deleteAnswer() {
-        this.answerList.removeAll(this.answerList);
-    }
-
     public QuestionToAnswer(ListToQuestion listToQuestion) {
         this.listToQuestion = listToQuestion;
     }
