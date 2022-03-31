@@ -39,7 +39,7 @@ public class UserController {
         return ResponseUtil.success(loginResponseDto, "로그인 성공");
     }
 
-    @ApiOperation(value = "회원 탈퇴", response = LoginResponseDto.class)
+    @ApiOperation(value = "회원 탈퇴")
     @DeleteMapping("/user")
     public ResponseEntity<?> deleteUser(@CurrentUser UserPrincipal userPrincipal) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
