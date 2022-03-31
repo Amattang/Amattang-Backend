@@ -33,6 +33,7 @@ public class CommonCheckListDto {
         private String roomType;
         private String area;
         private String form;
+        private boolean pinned;
     }
 
     public static CommonCheckListDto create(CheckList checkList, List<CommonQuestionDto> question) {
@@ -47,7 +48,8 @@ public class CommonCheckListDto {
                                 checkList.getDistance(),
                                 checkList.getRoomType(),
                                 checkList.getArea(),
-                                checkList.getFloor()
+                                checkList.getFloor(),
+                                checkList.isPinned()
                         )
                 )
                 .build();
