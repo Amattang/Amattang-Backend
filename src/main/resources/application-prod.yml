@@ -15,8 +15,10 @@ spring:
     show-sql: true
 
 logging:
-  file:
-    path: /home/ubuntu/log
   level:
-    root: info
-    com.example.amattang: debug
+    config: classpath:logback.xml
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false
