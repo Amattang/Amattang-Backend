@@ -31,9 +31,8 @@ public class User {
         USER
     }
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @Builder.Default
     private List<CheckList> checkLists = new ArrayList<>();
-
 
 }
