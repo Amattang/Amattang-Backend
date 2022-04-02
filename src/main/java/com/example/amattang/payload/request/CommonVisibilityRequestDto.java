@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 public class CommonVisibilityRequestDto {
 
-    @Size(min = 1, message = "question을 입력해주세요")
+    @Valid
     List<Question> question;
 
     @Data
