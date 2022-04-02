@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -155,55 +156,54 @@ public class CommonQuestionAnswerService {
 
     public String updateBasicInfoToCheckList(TypeARequest request, ListToQuestion relation, CheckList checkList) {
         String basic = relation.getCommonQuestionId().getBasicType();
-        String data = "";
-        String data2 = "";
+        List<String> list = new ArrayList<>();
         for (ButtonRequest r : request.getAnswer()) {
             if (r.getVal()) {
-                data = r.getType();
+                list.add(r.getType());
             }
         }
-        return setValueToCheckList(checkList, data, data2, basic);
+        return setValueToCheckList(checkList, list, basic);
     }
     public String updateBasicInfoToCheckList(TypeBRequest request, ListToQuestion relation, CheckList checkList) {
         String basic = relation.getCommonQuestionId().getBasicType();
-        String data = "";
-        String data2 = "";
+        List<String> list = new ArrayList<>();
         for (AnswerBRequest r : request.getAnswer()) {
-            data = r.getType();
-            data2 = r.getDescription();
+            list.add(r.getType());
+            list.add(r.getDescription());
         }
-        return setValueToCheckList(checkList, data, data2, basic);
+        return setValueToCheckList(checkList, list, basic);
 
     }
     public String updateBasicInfoToCheckList(TypeDRequest request, ListToQuestion relation, CheckList checkList) {
         String basic = relation.getCommonQuestionId().getBasicType();
-        String data = "";
-        String data2 = "";
+        List<String> list = new ArrayList<>();
         for (Request r : request.getAnswer()) {
             if (r.getVal()) {
-                data = r.getType();
+                list.add(r.getType());
                 break;
             }
         }
-        return setValueToCheckList(checkList, data, data2, basic);
+        return setValueToCheckList(checkList, list, basic);
     }
 
-    public String setValueToCheckList(CheckList checkList, String data, String data2, String basicType) {
+    public String setValueToCheckList(CheckList checkList, List<String> list, String basicType) {
+        log.debug("data : " + list.toString().replaceAll("[\\[\\]]", ""));
         switch (basicType) {
             case "title":
-                checkList.setTitle(data);
+                checkList.setTitle(list.get(0));
                 break;
             case "type":
-                checkList.setRoomType(data + data2);
+                checkList.setRoomType(list.toString().replaceAll("[\\[\\]]", "").replaceAll(", ", ""));
                 break;
             case "floor":
-                checkList.setFloor(data + data2);
+                checkList.setFloor(list.toString().replaceAll("[\\[\\]]", "").replaceAll(", ", ""));
                 break;
             case "distance":
-                checkList.setDistance(data + data2);
+                if (list.size() == 2) checkList.setDistance(list.get(0) + list.get(1));
+                else if(list.size() == 4) checkList.setDistance(list.get(0) + " " + list.get(2) + list.get(3));
                 break;
             case "area":
-                checkList.setArea(data + data2);
+                checkList.setArea(list.toString().replaceAll("[\\[\\]]", "").replaceAll(", ", ""));
                 break;
             default: break;
         }
