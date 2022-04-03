@@ -40,9 +40,8 @@ public class CustomQuestionController {
             @ApiImplicitParam(name = "checkListId", value = "체크리스트 아이디", paramType = "path"),
     })
     @GetMapping
-    public ResponseEntity<?> getAllCustomLists(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") Long checkListId) {
-        User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
-        List<CustomCheckListResponseDto> customQuestionList = questionService.getAllCategoryAndAnswer(user, checkListId);
+    public ResponseEntity<?> getAllCustomLists(@PathVariable("checkListId") Long checkListId) {
+        List<CustomCheckListResponseDto> customQuestionList = questionService.getAllCategoryAndAnswer(checkListId);
         return ResponseUtil.success(customQuestionList, GET_CUSTOM_ALL_QUESTION);
     }
 
