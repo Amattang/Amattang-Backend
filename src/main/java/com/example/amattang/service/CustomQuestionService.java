@@ -30,9 +30,8 @@ public class CustomQuestionService {
     private final CheckListRepository checkListRepository;
     private final CustomQuestionRepository questionRepository;
 
-    public List<CustomCheckListResponseDto> getAllCategoryAndAnswer(User user, Long checkListId) {
+    public List<CustomCheckListResponseDto> getAllCategoryAndAnswer(Long checkListId) {
         CheckList checkList = checkListRepository.findById(checkListId).orElseThrow(() -> new IllegalArgumentException(NOT_EXIST_CHECK_LIST));
-        isCorrectAuthor(user.getId(), checkList.getUser().getId());
         return checkList.getCustomCategories().stream()
                 .map(x -> CustomCheckListResponseDto.fromEntity(x))
                 .collect(Collectors.toList());
