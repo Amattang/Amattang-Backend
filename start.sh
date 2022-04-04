@@ -1,12 +1,7 @@
 #!/bin/bash
 echo "> build : Amattang-0.0.1-SNAPSHOT.jar" >> /home/ubuntu/deploy.log
-
-
-echo "> build 파일 복사" >> /home/ubuntu/deploy.log
-cp Amattang-0.0.1-SNAPSHOT.jar /home/ubuntu
-
-echo "> .env 파일 복사" >> /home/ubuntu/deploy.log
-cp .env /home/ubuntu
+echo "> copy environment : source .env 실행" >> /home/ubuntu/deploy.log
+source /home/ubuntu/deploy/.env
 
 echo "> 현재 실행중인 애플리케이션 pid 확인" >> /home/ubuntu/deploy.log
 CURRENT_PID=$(pgrep -f Amattang-0.0.1-SNAPSHOT.jar)
@@ -21,4 +16,4 @@ else
 fi
 
 echo "> DEPLOY_JAR 배포"    >> /home/ubuntu/deploy.log
-nohup java -DSpring.profiles.active=prod -Duser.timezone=Asia/Seoul -jar /home/ubuntu/Amattang-0.0.1-SNAPSHOT.jar >> /home/ubuntu/deploy.log 2>/home/ubuntu/deploy_err.log &
+nohup java -DSpring.profiles.active=prod -Duser.timezone=Asia/Seoul -jar /home/ubuntu/deploy/Amattang-0.0.1-SNAPSHOT.jar >> /home/ubuntu/deploy.log 2>/home/ubuntu/deploy_err.log &
