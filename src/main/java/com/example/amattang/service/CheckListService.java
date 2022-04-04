@@ -44,13 +44,11 @@ public class CheckListService {
 
     @Transactional
     public void changeCheckListIsPinned(User user, CheckListChangePinRequestDto dto) {
-        List<CheckList> checkLists = user.getCheckLists();
 
-        checkLists.stream()
-                .filter(x -> x.getId().equals(dto.getCheckListId()))
-                .findAny()
-                .orElseThrow(() -> new IllegalArgumentException(NOT_EXIST_CHECK_LIST))
-                .setPinned(dto.getPinned());
+        if (!checkListRepository.existsByIdAndUser_Id(dto.getCheckListId(), user.getId())) {
+            throw new IllegalArgumentException(NOT_EXIST_CHECK_LIST);
+        }
+        checkListRepository.updatePinnedByCheckListIdAndPinned(dto.getCheckListId(), dto.getPinned());
     }
 
     public Map<String, Long> createCheckList(User user) {
