@@ -8,7 +8,10 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -66,10 +69,4 @@ public class CheckList {
         this.pinned = pinned;
     }
 
-    public boolean isGetAnswer() {
-        Optional<ListToQuestion> isAnswer = this.listCommonQuestion.stream()
-                .filter(x -> x.getQuestionToAnswer() != null)
-                .findFirst();
-        return isAnswer.isPresent();
-    }
 }
