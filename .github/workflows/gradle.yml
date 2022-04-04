@@ -46,22 +46,22 @@ jobs:
       - name: Create .env file
         run: |
           touch .env
-          echo "DB_URL=\"${{secrets.DB_URL}}\"" >> .env
-          echo "DB_USERNAME=${{secrets.DB_USERNAME}}" >> .env
-          echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}" >> .env
-          echo "REDIS_HOST=${{secrets.REDIS_HOST}}" >> .env
-          echo "REDIS_PORT=${{secrets.REDIS_PORT}}" >> .env
-          echo "S3_ACCESS=${{secrets.S3_ACCESS}}" >> .env
-          echo "S3_SECRET=${{secrets.S3_SECRET}}" >> .env
-          echo "S3_BUCKET=${{secrets.S3_BUCKET}}" >> .env
-          echo "S3_REGION=${{secrets.S3_REGION}}" >> .env
-          echo "S3_STACK_AUTO=${{secrets.S3_STACK_AUTO}}" >> .env
-          echo "JWT_ISSUER=${{secrets.JWT_ISSUER}}" >> .env
-          echo "JWT_SECRET=${{secrets.JWT_SECRET}}" >> .env
-          echo "JWT_ACCESS_EXPIRATION=${{secrets.JWT_ACCESS_EXPIRATION}}" >> .env
-          echo "JWT_REFRESH_EXPIRATION=${{secrets.JWT_REFRESH_EXPIRATION}}" >> .env
-          echo "MAX_FILE=${{secrets.MAX_FILE}}" >> .env
-          echo "MAX_REQUEST=${{secrets.MAX_REQUEST}}" >> .env
+          echo "env.DB_URL=\"${{secrets.DB_URL}}\"" >> .env
+          echo "env.DB_USERNAME=${{secrets.DB_USERNAME}}" >> .env
+          echo "env.DB_PASSWORD=${{secrets.DB_PASSWORD}}" >> .env
+          echo "env.REDIS_HOST=${{secrets.REDIS_HOST}}" >> .env
+          echo "env.REDIS_PORT=${{secrets.REDIS_PORT}}" >> .env
+          echo "env.S3_ACCESS=${{secrets.S3_ACCESS}}" >> .env
+          echo "env.S3_SECRET=${{secrets.S3_SECRET}}" >> .env
+          echo "env.S3_BUCKET=${{secrets.S3_BUCKET}}" >> .env
+          echo "env.S3_REGION=${{secrets.S3_REGION}}" >> .env
+          echo "env.S3_STACK_AUTO=${{secrets.S3_STACK_AUTO}}" >> .env
+          echo "env.JWT_ISSUER=${{secrets.JWT_ISSUER}}" >> .env
+          echo "env.JWT_SECRET=${{secrets.JWT_SECRET}}" >> .env
+          echo "env.JWT_ACCESS_EXPIRATION=${{secrets.JWT_ACCESS_EXPIRATION}}" >> .env
+          echo "env.JWT_REFRESH_EXPIRATION=${{secrets.JWT_REFRESH_EXPIRATION}}" >> .env
+          echo "env.MAX_FILE=${{secrets.MAX_FILE}}" >> .env
+          echo "env.MAX_REQUEST=${{secrets.MAX_REQUEST}}" >> .env
         
       # copy .env file
       - name: copy .env file
