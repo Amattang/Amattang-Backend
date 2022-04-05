@@ -62,6 +62,9 @@ jobs:
           echo "JWT_REFRESH_EXPIRATION=${{secrets.JWT_REFRESH_EXPIRATION}}" >> .env
           echo "MAX_FILE=${{secrets.MAX_FILE}}" >> .env
           echo "MAX_REQUEST=${{secrets.MAX_REQUEST}}" >> .env
+          echo "SSL_KEY_STORE=${{secrets.SSL_KEY_STORE}}" >> .env
+          echo "SSL_KEY_STORE_TYPE=${{secrets.SSL_KEY_STORE_TYPE}}" >> .env
+          echo "SSL_KEY_STORE_PASSWORD=${{secrets.SSL_KEY_STORE_PASSWORD}}" >> .env
         
       # copy .env file
       - name: copy .env file
