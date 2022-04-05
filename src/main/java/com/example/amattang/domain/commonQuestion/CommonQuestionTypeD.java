@@ -14,7 +14,4 @@ import javax.persistence.Entity;
 @DiscriminatorValue("D")
 public class CommonQuestionTypeD extends CommonQuestion{
 
-    private Boolean duplication;
-
-
 }
