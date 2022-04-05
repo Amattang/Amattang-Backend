@@ -13,7 +13,7 @@ import javax.persistence.Entity;
 @DiscriminatorValue("B")
 public class CommonQuestionTypeB extends CommonQuestion{
 
-
+    private String setting;
     private String direction1;
     private String direction2;
 

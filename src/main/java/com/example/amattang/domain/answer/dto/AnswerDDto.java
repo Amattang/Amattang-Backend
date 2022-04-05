@@ -21,9 +21,6 @@ public class AnswerDDto {
     @ApiModelProperty(value = "답변 아이디", example = "45")
     private Long id;
 
-//    @ApiModelProperty(value = "중복 선택 가능 여부", example = "true")
-//    private boolean duplication;
-
     List<Answer> answer;
 
     @Data
