@@ -53,10 +53,5 @@ public class CommonQuestionDto {
                 .visibility(visibility)
                 .build();
     }
-    public static CommonQuestionDto fromQuestion(CommonQuestion question, List answer) {
-        return fromQuestionBuilder(question, answer)
-                .visibility(true)
-                .build();
-    }
 
 }

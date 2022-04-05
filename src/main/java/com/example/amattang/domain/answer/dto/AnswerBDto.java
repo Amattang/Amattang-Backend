@@ -24,12 +24,15 @@ public class AnswerBDto {
     @Getter
     @AllArgsConstructor
     static class Answer {
+        @ApiModelProperty(name = "입력 칸 안에 들어갈 지시문", example = "직접 입력")
+        private String setting;
         @ApiModelProperty(name = "답변1", example = "5")
         private String type;
         @ApiModelProperty(name = "지시문1", example = "평")
         private String description;
 
-        public Answer (String description) {
+        public Answer (String setting, String description) {
+            this.setting = setting;
             this.description = description;
         }
     }
@@ -37,11 +40,11 @@ public class AnswerBDto {
     public static List<Answer> fromQuestion(CommonQuestionTypeB question) {
 
         List<Answer> list = new ArrayList<>();
-        if (question.getDirection1() != null && StringUtils.hasText(question.getDirection1())) {
-            list.add(new Answer(question.getDirection1()));
+        if (question.getDirection1() != null) {
+            list.add(new Answer(question.getSetting(), question.getDirection1()));
         }
-        if (question.getDirection2() != null && StringUtils.hasText(question.getDirection2())) {
-            list.add(new Answer(question.getDirection2()));
+        if (question.getDirection2() != null) {
+            list.add(new Answer(question.getSetting(), question.getDirection2()));
         }
 
         return list;
@@ -51,7 +54,7 @@ public class AnswerBDto {
 
         List<Answer> list = new ArrayList<>();
         for (com.example.amattang.domain.answer.Answer a : answer) {
-            list.add(new Answer(((AnswerString) a).getAns(), a.getType()));
+            list.add(new Answer(question.getSetting(), ((AnswerString) a).getAns(), a.getType()));
         }
 
         return list;
