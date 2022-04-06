@@ -21,6 +21,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private PROVIDER provider;
 
+    @Setter
     private String name;
 
     public enum PROVIDER {

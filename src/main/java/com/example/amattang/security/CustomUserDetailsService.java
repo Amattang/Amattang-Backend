@@ -24,7 +24,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
     private KakaoRestTemplate kakaoRestTemplate = new KakaoRestTemplate();
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;
@@ -36,18 +35,26 @@ public class CustomUserDetailsService implements UserDetailsService {
         return UserPrincipal.create(user);
     }
 
-    public User registerNewKakaoUser(String accessToken, String provider) {
+    public User loadKakaoUser(String accessToken, String provider) {
         provider = provider.toUpperCase();
         if (provider.equals(PROVIDER.KAKAO.name())) {
             Optional<KakaoUserInfoReponseDto> kakaoInfo = kakaoRestTemplate.getKakaoUserNickName(accessToken);
             if (kakaoInfo.isEmpty()) throw new IllegalArgumentException("유효하지 않은 카카오 액세스 토큰입니다.");
             KakaoUserInfoReponseDto userInfo = kakaoInfo.get();
+            String userId = "KAKAO_" + userInfo.getId();
+            User user;
+            Optional<User> optionalUser = userRepository.findById(userId);
             try {
-                User user = User.builder()
-                        .id(provider + "_" + userInfo.getId())
-                        .provider(PROVIDER.KAKAO)
-                        .name(userInfo.getProperties().get("nickname"))
-                        .build();
+                if (optionalUser.isPresent()) {
+                    user = optionalUser.get();
+                    user.setName(userInfo.getProperties().get("nickname"));
+                } else {
+                    user = User.builder()
+                            .id(userId)
+                            .provider(PROVIDER.KAKAO)
+                            .name(userInfo.getProperties().get("nickname"))
+                            .build();
+                }
                 UserPrincipal.create(user);
                 return userRepository.save(user);
             } catch (NullPointerException e) {
@@ -57,14 +64,22 @@ public class CustomUserDetailsService implements UserDetailsService {
         throw new IllegalArgumentException("로그인을 지원하지 않는 인증 기관입니다. => " + provider);
     }
 
-    public User registerNewAppleUser(String userId, String email) {
-        User user = User.builder()
-                .id("APPLE_" + userId)
-                .provider(PROVIDER.APPLE)
-                .name(email)
-                .build();
+
+    public User loadAppleUser(String userId, String email) {
+        String userId1 = "APPLE_" + userId;
+        User user;
+        Optional<User> optionalUser = userRepository.findById(userId1);
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+            user.setName(email);
+        } else {
+            user = User.builder()
+                    .id(userId1)
+                    .provider(PROVIDER.APPLE)
+                    .name(email)
+                    .build();
+        }
         UserPrincipal.create(user);
         return userRepository.save(user);
     }
-
 }
