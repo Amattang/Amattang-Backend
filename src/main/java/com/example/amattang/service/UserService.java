@@ -32,12 +32,12 @@ public class UserService {
     private final RedisTemplate redisTemplate;
 
     public LoginResponseDto loadUser(LoginRequestDto dto) {
-        User user = userDetailsService.registerNewKakaoUser(dto.getAccessToken(), dto.getProvider());
+        User user = userDetailsService.loadKakaoUser(dto.getAccessToken(), dto.getProvider());
         return makeTokenWithUser(user);
     }
 
     public LoginResponseDto loadUser(AppleLoginRequestDto dto) {
-        User user = userDetailsService.registerNewAppleUser(dto.getUser(), dto.getEmail());
+        User user = userDetailsService.loadAppleUser(dto.getUser(), dto.getEmail());
         return makeTokenWithUser(user);
     }
 
