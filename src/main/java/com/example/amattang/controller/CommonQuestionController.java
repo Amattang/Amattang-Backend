@@ -9,7 +9,6 @@ import com.example.amattang.payload.reponse.CommonQuestionDto;
 import com.example.amattang.payload.reponse.ResponseUtil;
 import com.example.amattang.payload.request.CommonRequestDto;
 import com.example.amattang.payload.request.CommonVisibilityRequestDto;
-import com.example.amattang.payload.request.CommonVisibilityRequestDto.Question;
 import com.example.amattang.security.CurrentUser;
 import com.example.amattang.security.UserPrincipal;
 import com.example.amattang.service.CheckListService;
@@ -91,16 +90,6 @@ public class CommonQuestionController {
     @PutMapping("/{checkListId}/common/question/status")
     public ResponseEntity<?> changeStatusCommonQuestion(@CurrentUser UserPrincipal userPrincipal, @PathVariable("checkListId") @Valid Long checkListId, @RequestBody @Valid CommonVisibilityRequestDto dto) {
         User user = userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
-
-//        for (Question d : dto.getQuestion()) {
-//            if (d.getQuestionId() == null) {
-//                throw new IllegalArgumentException("삭제(추가)할 질문 아이디가 누락되었습니다.");
-//            }
-//            if (d.getVisibility() == null) {
-//                throw new IllegalArgumentException("질문 삭제 여부가 누락되었습니다.");
-//            }
-//        }
-
         questionService.updateCommonQuestionStatus(user, checkListId, dto);
         return ResponseUtil.success(UPDATE_CHECK_LIST_QUESTION_STATUS, CREATED);
     }
