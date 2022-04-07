@@ -44,3 +44,5 @@ src/main/resources/**
 **/dataSet/**
 mylog.txt
 .env
+.DS_Store
+.log
