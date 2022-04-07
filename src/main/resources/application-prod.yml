@@ -4,6 +4,8 @@ spring:
     url: ${env.DB_URL}
     username: ${env.DB_USERNAME}
     password: ${env.DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
   redis:
     host: ${env.REDIS_HOST}
     port: ${env.REDIS_PORT}
