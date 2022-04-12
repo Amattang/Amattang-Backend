@@ -23,7 +23,6 @@
 <br>
 spring-dotenv로 환경 변수 관리<br>
 github actions + github secrets -> aws s3 -> code deploy -> aws ec2<br>
-로그는 elk로 관리하였으나, 서버 사양으로 로컬에서 테스트 용도로만 사용<br>
 
 ### ERD (Mysql)
 ![amattang-erd](https://user-images.githubusercontent.com/50989437/162874905-28330277-ca43-429e-acd8-05d3a2fce7b6.png)
