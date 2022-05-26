@@ -16,16 +16,10 @@ spring:
         format_sql: true
     show-sql: true
 
-logging:
-  file:
-    path: /home/ubuntu/log
-  level:
-    root: info
-    com.example.amattang: debug
 server:
-  port: 443
-
-  ssl:
-    key-store: ${env.SSL_KEY_STORE}
-    key-store-type: ${env.SSL_KEY_STORE_TYPE}
-    key-store-password: ${env.SSL_KEY_STORE_PASSWORD}
+  port: 8080
+#
+#  ssl:
+#    key-store: ${env.SSL_KEY_STORE}
+#    key-store-type: ${env.SSL_KEY_STORE_TYPE}
+#    key-store-password: ${env.SSL_KEY_STORE_PASSWORD}
