@@ -2,10 +2,11 @@ package com.example.amattang.controller;
 
 import com.example.amattang.domain.user.User;
 import com.example.amattang.domain.user.UserRepository;
+import com.example.amattang.payload.reponse.ResponseMessage;
 import com.example.amattang.payload.reponse.ResponseUtil;
-import com.example.amattang.security.CurrentUser;
-import com.example.amattang.security.UserPrincipal;
 import com.example.amattang.service.ImageService;
+import com.example.amattang.util.CurrentUser;
+import com.example.amattang.util.UserPrincipal;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;

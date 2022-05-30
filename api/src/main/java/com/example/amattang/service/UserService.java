@@ -7,8 +7,8 @@ import com.example.amattang.payload.request.AppleLoginRequestDto;
 import com.example.amattang.payload.request.LoginRequestDto;
 import com.example.amattang.payload.request.ReIssueTokenRequestDto;
 import com.example.amattang.security.CustomUserDetailsService;
-import com.example.amattang.security.TokenProvider;
 import com.example.amattang.template.RedisCustomTemplate;
+import com.example.amattang.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -17,8 +17,9 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import static com.example.amattang.security.TokenProvider.TokenType.ACCESS;
-import static com.example.amattang.security.TokenProvider.TokenType.REFRESH;
+import static com.example.amattang.util.TokenProvider.TokenType.ACCESS;
+import static com.example.amattang.util.TokenProvider.TokenType.REFRESH;
+
 
 @Service
 @RequiredArgsConstructor

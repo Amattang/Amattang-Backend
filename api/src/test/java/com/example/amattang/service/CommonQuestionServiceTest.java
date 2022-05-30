@@ -4,8 +4,6 @@ import com.example.amattang.domain.answer.dto.AnswerADto;
 import com.example.amattang.domain.answer.dto.AnswerBDto;
 import com.example.amattang.domain.answer.dto.AnswerCDto;
 import com.example.amattang.domain.answer.dto.AnswerDDto;
-import com.example.amattang.domain.commonQuestion.*;
-import com.example.amattang.payload.reponse.CommonQuestionDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

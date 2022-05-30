@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.util.Date;
-import java.util.Locale;
 
 @Getter
 @Setter(AccessLevel.PRIVATE)

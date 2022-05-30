@@ -9,9 +9,9 @@ import com.example.amattang.domain.user.UserRepository;
 import com.example.amattang.payload.reponse.CustomCheckListResponseDto;
 import com.example.amattang.payload.reponse.ResponseUtil;
 import com.example.amattang.payload.request.CustomRequestDto;
-import com.example.amattang.security.CurrentUser;
-import com.example.amattang.security.UserPrincipal;
 import com.example.amattang.service.CustomQuestionService;
+import com.example.amattang.util.CurrentUser;
+import com.example.amattang.util.UserPrincipal;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static com.example.amattang.payload.reponse.ResponseMessage.*;
-import static com.example.amattang.payload.reponse.ResponseUtil.success;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
