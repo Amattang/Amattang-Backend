@@ -1,0 +1,23 @@
+bootJar {
+    enabled = false
+}
+jar {
+    enabled = true
+}
+
+
+dependencies {
+
+    implementation("io.netty:netty-resolver-dns-native-macos:4.1.75.Final") {
+        artifact {
+            classifier = "osx-aarch_64"
+        }
+    }
+    compileOnly 'org.springframework.cloud:spring-cloud-starter-gateway:3.0.6'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
