@@ -3,10 +3,11 @@ package com.example.amattang.util;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Component
@@ -73,9 +74,12 @@ public class TokenProvider {
         return claims.getSubject();
     }
 
-    public String getJwtAccessFromHeader(HttpServletRequest request) {
-        String accessToken = request.getHeader("Authorization");
-        return getJwtAccessFromFullToken(accessToken);
+    public String getJwtAccessFromHeader(ServerHttpRequest request) {
+        if (request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+            String accessToken = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
+            getJwtAccessFromFullToken(accessToken);
+        }
+        throw new IllegalArgumentException("error!!");
     }
 
     public String getJwtAccessFromFullToken(String accessToken) {

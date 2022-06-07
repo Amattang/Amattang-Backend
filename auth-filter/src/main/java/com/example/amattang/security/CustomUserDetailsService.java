@@ -8,27 +8,28 @@ import com.example.amattang.restTemplate.KakaoRestTemplate;
 import com.example.amattang.restTemplate.response.KakaoUserInfoReponseDto;
 import com.example.amattang.util.UserPrincipal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService implements ReactiveUserDetailsService {
 
     private final UserRepository userRepository;
 
     private KakaoRestTemplate kakaoRestTemplate = new KakaoRestTemplate();
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public Mono<UserDetails> findByUsername(String username) {
         return null;
     }
+
     @Transactional
     public UserDetails loadUserByUserId(String userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException(ExceptionMessage.NOT_FOUND_USER + "id => " + userId));
