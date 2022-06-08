@@ -74,14 +74,6 @@ public class TokenProvider {
         return claims.getSubject();
     }
 
-    public String getJwtAccessFromHeader(ServerHttpRequest request) {
-        if (request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-            String accessToken = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
-            getJwtAccessFromFullToken(accessToken);
-        }
-        throw new IllegalArgumentException("error!!");
-    }
-
     public String getJwtAccessFromFullToken(String accessToken) {
         if (StringUtils.hasText(accessToken) && accessToken.startsWith("Bearer")) {
             return accessToken.substring(7, accessToken.length());

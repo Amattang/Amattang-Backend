@@ -3,6 +3,7 @@ package com.example.amattang.security;
 import com.example.amattang.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,13 +30,18 @@ public class TokenAuthenticationFilter implements WebFilter {
         log.debug("do filter => token authentication filter");
 
         try {
-            String accessToken = tokenProvider.getJwtAccessFromHeader(request);
-            if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) {
-                String userId = tokenProvider.getUserIdFromToken(accessToken);
 
-                UserDetails userDetails = customUserDetailsService.loadUserByUserId(userId);
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            if (request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+                String accessToken = tokenProvider.getJwtAccessFromFullToken(request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0));
+
+                if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) {
+                    String userId = tokenProvider.getUserIdFromToken(accessToken);
+
+                    UserDetails userDetails = customUserDetailsService.loadUserByUserId(userId);
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                }
+
             }
 
         } catch (Exception e) {

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.*;
@@ -13,7 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLDecoder;
-import java.util.Optional;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Slf4j
 @Configuration
@@ -33,8 +35,8 @@ public class CorsConfig implements WebMvcConfigurer, Filter {
         String contentType = request.getContentType();
         log.info("Request Content Type => " + contentType);
 
-        if (Optional.ofNullable(request.getHeader("Authorization")).isPresent()) {
-            String token = tokenProvider.getJwtAccessFromHeader(request);
+        if (StringUtils.hasText(request.getHeader(AUTHORIZATION))) {
+            String token = tokenProvider.getJwtAccessFromFullToken(request.getHeader(AUTHORIZATION));
             String userId = tokenProvider.getUserIdFromToken(token);
 
             log.info("Request User Id => "+userId);
@@ -55,6 +57,4 @@ public class CorsConfig implements WebMvcConfigurer, Filter {
             chain.doFilter(req, res);
         }
     }
-
-
 }
