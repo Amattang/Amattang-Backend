@@ -1,10 +1,10 @@
-package com.example.amattang.security;
+package com.example.amattang.filter;
 
+import com.example.amattang.security.CustomUserDetailsService;
 import com.example.amattang.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,35 +18,33 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TokenAuthenticationFilter implements WebFilter {
+public class CustomGlobalFilter implements WebFilter {
 
     private final TokenProvider tokenProvider;
     private final CustomUserDetailsService customUserDetailsService;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-
-        ServerHttpRequest request = exchange.getRequest();
         log.debug("do filter => token authentication filter");
 
         try {
+            String accessToken = tokenProvider.getJwtAccessFromFullToken(exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0));
 
-            if (request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                String accessToken = tokenProvider.getJwtAccessFromFullToken(request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0));
+            if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) {
+                String userId = tokenProvider.getUserIdFromToken(accessToken);
 
-                if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) {
-                    String userId = tokenProvider.getUserIdFromToken(accessToken);
+                UserDetails userDetails = customUserDetailsService.loadUserByUserId(userId);
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
-                    UserDetails userDetails = customUserDetailsService.loadUserByUserId(userId);
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                }
-
+                authenticationToken.setDetails(exchange.getRequest());
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
 
         } catch (Exception e) {
             log.warn(e.getMessage());
         }
-        return null;
+
+        return chain.filter(exchange);
     }
+
 }

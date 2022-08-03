@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/amattang?useSSL=false&useUnicode=true$serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: jaeesu
+    password: jaeesu!@
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+    defer-datasource-initialization: true
+    database: mysql
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:mysql/schema.sql
+      data-locations: classpath:mysql/data.sql
+  redis:
+    host: localhost
+    port: 6379
+  output:
+    ansi:
+      enabled: always
+server:
+  port: 8000

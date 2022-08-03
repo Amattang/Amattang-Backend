@@ -29,42 +29,52 @@ subprojects {
 	}
 
 	dependencies {
+//		 ('org.springframework.boot:spring-boot-starter-web')
 		implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 		implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-		implementation 'org.springframework.boot:spring-boot-starter-web'
 		compileOnly 'org.projectlombok:lombok'
 		developmentOnly 'org.springframework.boot:spring-boot-devtools'
-
-
-
-		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-		runtimeOnly 'mysql:mysql-connector-java'
-		implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.7'
 
 		annotationProcessor 'org.projectlombok:lombok'
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 		testImplementation 'org.springframework.security:spring-security-test'
 
 		//swagger
-		implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
-		implementation("io.springfox:springfox-swagger2:2.9.2") {
-			exclude module: 'swagger-annotations'
-			exclude module: 'swagger-models'
-		}
-		implementation("io.swagger:swagger-annotations:1.5.21")
-		implementation("io.swagger:swagger-models:1.5.21")
+		implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+		implementation 'io.springfox:springfox-swagger2:3.0.0'
+//		implementation("io.springfox:springfox-swagger2:2.9.2") {
+//			exclude module: 'swagger-annotations'
+//			exclude module: 'swagger-models'
+//		}
+//		implementation("io.swagger:swagger-annotations:1.5.21")
+//		implementation("io.swagger:swagger-models:1.5.21")
 
+		compileOnly 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.7'
+
+		compileOnly 'org.springframework.boot:spring-boot-starter-data-jpa'
+		compileOnly 'mysql:mysql-connector-java'
 
 		implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
-		// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws
-		implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+		compileOnly 'org.springframework.boot:spring-boot-starter-webflux:2.5.10'
 
 		implementation 'me.paulschwarz:spring-dotenv:2.5.1'
 
-		implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-		implementation 'org.springframework.boot:spring-boot-starter-security'
+		implementation("io.netty:netty-resolver-dns-native-macos:4.1.75.Final") {
+			artifact {
+				classifier = "osx-aarch_64"
+			}
+		}
+
+//		implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+//		implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+//		implementation 'org.springframework.boot:spring-boot-starter-security'
+//		implementation 'org.springframework.cloud:spring-cloud-security:2.2.5.RELEASE'
+
+//		implementation 'org.springframework.security:spring-security-config:5.7.1'
+//		implementation 'org.springframework.security:spring-security-web:5.7.1'
+
 
 	}
 }
@@ -72,21 +82,26 @@ subprojects {
 
 project(':core') {
 	dependencies {
-		implementation project(':domain')
+		compileOnly project(':domain')
+		implementation 'org.springframework.boot:spring-boot-starter-security'
+
 	}
 }
 
 project(':api') {
 	dependencies {
-		implementation project(':core')
-		implementation project(':domain')
-		implementation project(':api-auth')
+		compileOnly project(':core')
+		compileOnly project(':domain')
+		implementation 'org.springframework.boot:spring-boot-starter-security'
+
+//		implementation project(':auth-filter')
 	}
 }
 
-project(':api-auth') {
+project(':auth-filter') {
 	dependencies {
-		implementation project(':core')
 		implementation project(':domain')
+		implementation project(':core')
+		implementation 'org.springframework.boot:spring-boot-starter-security'
 	}
 }

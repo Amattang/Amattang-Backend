@@ -11,6 +11,8 @@ public class RestAuthenticationEntryPoint implements ServerAuthenticationEntryPo
 
     @Override
     public Mono<Void> commence(ServerWebExchange exchange, AuthenticationException ex) {
-        return null;
+        log.error("Responding with unauthorized error. Message - {}", ex.getMessage());
+        return Mono.empty();
     }
+
 }

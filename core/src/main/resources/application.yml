@@ -1,7 +1,7 @@
 spring:
   profiles:
     include: oauth, s3
-    active: local
+    active: prod
 
   devtools:
     restart:
@@ -11,6 +11,3 @@ spring:
     multipart:
       max-file-size: ${env.MAX_FILE}
       max-request-size: ${env.MAX_REQUEST}
-
-  main:
-    allow-bean-definition-overriding: true

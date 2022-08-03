@@ -2,7 +2,6 @@ package com.example.amattang.controller;
 
 import com.example.amattang.domain.user.User;
 import com.example.amattang.domain.user.UserRepository;
-import com.example.amattang.payload.reponse.ResponseMessage;
 import com.example.amattang.payload.reponse.ResponseUtil;
 import com.example.amattang.service.ImageService;
 import com.example.amattang.util.CurrentUser;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static com.example.amattang.payload.reponse.ResponseMessage.*;
-import static com.example.amattang.payload.reponse.ResponseUtil.success;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 

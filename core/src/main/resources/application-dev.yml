@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/amattang_dev?useSSL=false&useUnicode=true$serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: jaeesu
+    password: jaeesu!@
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+  redis:
+    host: localhost
+    port: 6379
+  level:
+    root: info
+    com.example.amattang: debug
+server:
+  port: 8000
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false

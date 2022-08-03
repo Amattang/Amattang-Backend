@@ -5,4 +5,5 @@ include 'api'
 include 'api-auth'
 include 'domain'
 include 'common'
+include 'auth-filter'
 

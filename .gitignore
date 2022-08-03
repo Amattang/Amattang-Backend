@@ -34,6 +34,8 @@ out/
 /.nb-gradle/
 
 ### user setting ###
+domain/src/main/resources/**
+api-auth/src/main/resources/**
 api/src/main/resources/**
 !api/src/main/resources/application.yml
 !api/src/main/resources/application-prod.yml

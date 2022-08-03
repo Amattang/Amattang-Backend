@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${env.DB_URL}
+    username: ${env.DB_USERNAME}
+    password: ${env.DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+  redis:
+    host: ${env.REDIS_HOST}
+    port: ${env.REDIS_PORT}
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+server:
+  port: 8080
+#
+#  ssl:
+#    key-store: ${env.SSL_KEY_STORE}
+#    key-store-type: ${env.SSL_KEY_STORE_TYPE}
+#    key-store-password: ${env.SSL_KEY_STORE_PASSWORD}
